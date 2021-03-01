@@ -74,6 +74,9 @@ class Participant
 
     private $campus;
 
+    private $sortie;
+
+
     /**
      * @return mixed
      */
