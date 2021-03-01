@@ -19,7 +19,7 @@ class Ville
 
     /**
      * @ORM\Column(type="string", length=30)
-     * @ORM\ManyToOne(targetEntity=Article::Lieu, inversedBy="nom")
+     * @ORM\OneToMany(targetEntity=Article::Lieu, inversedBy="nom")
      */
     private $nomVille;
 
