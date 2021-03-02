@@ -40,9 +40,7 @@ class Lieu
     private $longitude;
 
     /**
-     * @var Ville
      * @ORM\ManyToOne(targetEntity="App\Entity\Ville",inversedBy="lieux")
-     * @ORM\Column(type="integer")
      */
     private $noVille;
 
