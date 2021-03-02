@@ -55,7 +55,7 @@ class Sortie
     private $etat;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Participant", inversedBy="")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Participant", inversedBy="organisateurSortie")
      */
     private $organisateur;
 
