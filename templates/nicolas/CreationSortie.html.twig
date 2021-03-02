@@ -1,0 +1,17 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %} Création d'une sortie {% endblock %}
+
+{% block main %}
+
+    {{ form_start(registerForm) }}
+    {{ form_widget(registerForm) }}
+
+    <button name="enregistrer" type="submit" >Enregistrer</button>
+    <button name="publier" type="submit" > Publier la sortie</button>
+    <button name="annuler" type="submit" >Annuler</button>
+
+    {{ form_end(registerForm) }}
+
+{% endblock %}
+
