@@ -22,7 +22,7 @@ class UpdateType extends AbstractType
                 "label" => "Date limite d'inscription: "
             ])
             ->add('nbInscriptionsMax', null, [
-                "label" => "Nombre de places"
+                "label" => "Nombre de places: "
             ])
             ->add('duree',null,[
                 "label" => "Durée: "

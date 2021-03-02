@@ -9,13 +9,17 @@
 
     {{ form_start(updateForm) }}
     {{ form_widget(updateForm) }}
-    <label>Latitude: </label><input type="text">
-    <br>
-    <label>Longitude: </label><input type="text">
+
+    <label>Rue: {{lieux.rue}}</label><br>
+    <label>Code postal: {{ lieux.noVille.codePostal}}</label><br>
+
+
+    <label>Latitude: </label><input type="text"><br>
+    <label>Longitude: </label><input type="text"><br>
 <br>
     <button type="submit">Enregister</button>
     <button type="submit">Publier la sortie</button>
-    <button type="submit">Supprimer la sortie</button>
+    <button><a href="{{ path('delete_sortie')}}">Supprimer la sortie</button>
     <button><a href="{{ path('home') }}">Annuler</button>
 {{ form_end(updateForm) }}
 

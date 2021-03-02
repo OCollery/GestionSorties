@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block main %}
+<h1>VOULEZ VOUS VRAIMENT SUPPRIMER</h1>
+
+    <button><a href="{{ path('delete_sortie',{'id':sortie.id}) }}"></a> oui</button>
+    <button><a href="{{ path('home') }}"></a> non</button>
+
+
+
+{% endblock %}
