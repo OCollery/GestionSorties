@@ -19,50 +19,50 @@ class Participant
     private $id;
 
    /**
-    * ORM\column(type="string",length=255)
+    * @ORM\column(type="string",length=255)
     */
 
     private $pseudo;
 
     /**
-     * ORM\column(type="string",length=255)
+     * @ORM\column(type="string",length=255)
      */
 
     private $nom;
 
     /**
-     * ORM\column(type="string",length=255)
+     * @ORM\column(type="string",length=255)
      */
 
     private $prenom;
 
     /**
-     * ORM\column(type="string",length=255)
+     * @ORM\column(type="string",length=255)
      */
 
     private $telephone;
 
     /**
-     * ORM\column(type="string",length=255, nullable=true)
+     * @ORM\column(type="string",length=255, nullable=true)
      */
 
     private $mail;
 
     /**
-     * ORM\column(type="string",length=255)
+     * @ORM\column(type="string",length=255)
      */
 
     private $motPasse;
 
     /**
-     * ORM\column(type="boolean")
+     * @ORM\column(type="boolean")
      */
 
     private $admin;
 
 
     /**
-     * ORM\column(type="boolean")
+     * @ORM\column(type="boolean")
      */
 
     private $actif;
