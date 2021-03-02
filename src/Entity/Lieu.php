@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\LieuRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -40,7 +41,7 @@ class Lieu
 
     /**
      * @var Ville
-     * @ORM\ManyToOne(targetEntity="App\Entity\Ville",inversedBy="id")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Ville",inversedBy="lieux")
      * @ORM\Column(type="integer")
      */
     private $noVille;
@@ -49,6 +50,15 @@ class Lieu
      * @ORM\OneToMany(targetEntity="App\Entity\Sortie", mappedBy="lieu")
      */
     private $sortie;
+
+    /**
+     * Lieu constructor.
+     * @param $sortie
+     */
+    public function __construct()
+    {
+        $this->sortie = new ArrayCollection();
+    }
 
     /**
      * @return mixed

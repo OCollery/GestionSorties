@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\ParticipantRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -68,13 +69,61 @@ class Participant
 
 
     /**
-     * @var Campus
-     * ORM\ManyToOne(targetEntity="App\Entity\Campus)
+     * @ORM\ManyToOne(targetEntity="App\Entity\Campus",inversedBy="participants")
      */
 
     private $campus;
 
-    private $sortie;
+    /**
+     * @ORM\OneToMany (targetEntity="App\Entity\Sortie", mappedBy="organisateur")
+     */
+    private $organisateurSortie;
+
+
+    /**
+     * @ORM\ManyToMany(targetEntity=Sortie::class)
+     */
+    private $inscritSortie;
+    public function __construct()
+    {
+        $this->inscritSortie = new ArrayCollection();
+        $this->organisateurSortie = new ArrayCollection();
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getOrganisateurSortie()
+    {
+        return $this->organisateurSortie;
+    }
+
+    /**
+     * @param mixed $organisateurSortie
+     */
+    public function setOrganisateurSortie($organisateurSortie): void
+    {
+        $this->organisateurSortie = $organisateurSortie;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getInscritSortie()
+    {
+        return $this->inscritSortie;
+    }
+
+    /**
+     * @param mixed $inscritSortie
+     */
+    public function setInscritSortie($inscritSortie): void
+    {
+        $this->inscritSortie = $inscritSortie;
+    }
+
+
+
 
 
     /**
@@ -238,20 +287,25 @@ class Participant
     }
 
     /**
-     * @return mixed
+     * @param mixed $inscritSortie
      */
-    public function getSortie()
+    public function inscritSortie($inscritSortie): void
     {
-        return $this->sortie;
+        $this->inscritSortie = $inscritSortie;
+    }
+    public function addInscritSortie(participant $inscritSortie): self
+    {
+    if (!$this->inscritSortie->contains($inscritSortie)) {
+        $this->inscritSortie[] = $inscritSortie;
+    }
+    return $this;
+}
+    public function removeInscritSortie(participant $inscritSortie): self
+    {
+        $this->inscritSortie->removeElement($inscritSortie);
+    return $this;
     }
 
-    /**
-     * @param mixed $sortie
-     */
-    public function setSortie($sortie): void
-    {
-        $this->sortie = $sortie;
-    }
 
 
 
