@@ -286,28 +286,4 @@ class Sortie
 
         return $this;
     }
-
-    /**
-     * @return Collection|participant[]
-     */
-    public function getTest(): Collection
-    {
-        return $this->test;
-    }
-
-    public function addTest(participant $test): self
-    {
-        if (!$this->test->contains($test)) {
-            $this->test[] = $test;
-        }
-
-        return $this;
-    }
-
-    public function removeTest(participant $test): self
-    {
-        $this->test->removeElement($test);
-
-        return $this;
-    }
 }
