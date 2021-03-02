@@ -13,28 +13,30 @@ use Symfony\Component\Routing\Annotation\Route;
 class OlivierController extends AbstractController
 {
     /**
-     * @Route("/Modifier_Sortie{id}", name="modifier")
+     * @Route("/Modifier_Sortie", name="modifier")
      */
-    public function modifier(EntityManagerInterface $em, Request $request, Sortie $sortie): Response
+    public function modifier(EntityManagerInterface $em/*, Request $request, Sortie $sortie*/): Response
     {
     //Permet de récupérer l'ensemble des sorties
         $repo = $em->getRepository(Sortie::class);
-        $sortie = $repo ->findAll();
+        //$sortie = $repo ->findAll();
 
     //on récupère le formulaire
-      /*  $form = $this->createForm(UpdateType::class);
-        $form->handleRequest($request);
+       $form = $this->createForm(UpdateType::class);
+        /*$form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid())
         {
            $em->flush();
 
            $this->addFlash('success', 'La sortie a été mise à jour');
-           return $this->redirectToRoute('home');
-        }*/
-        $formView = $form->createView();
+           return $this->redirectToRoute('modifier');
+        }
+        /*$formView = $form->createView();
 
-        return $this->render('main/modifierUneSortie.html.twig',[array('sortie'=>$sortie, 'updateForm'=>$formView)]);
+        return $this->render('main/modifierUneSortie.html.twig',[array('sortie'=>$sortie, 'updateForm'=>$formView)]);*/
+
+        return $this->render('main/modifierUneSortie.html.twig', ['updateForm'=>$form->createView()]);
     }
 
 }
