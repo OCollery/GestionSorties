@@ -40,11 +40,14 @@ class Lieu
 
     /**
      * @var Ville
-     * @ORM\ManyToOne(targetEntity="App\Entity\Ville")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Ville",inversedBy="id")
      * @ORM\Column(type="integer")
      */
     private $noVille;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Sortie", mappedBy="lieu")
+     */
     private $sortie;
 
     /**
@@ -66,6 +69,22 @@ class Lieu
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    /**
+     * @return Ville
+     */
+    public function getNoVille(): Ville
+    {
+        return $this->noVille;
+    }
+
+    /**
+     * @param Ville $noVille
+     */
+    public function setNoVille(Ville $noVille): void
+    {
+        $this->noVille = $noVille;
     }
 
     public function getNom(): ?string
@@ -116,15 +135,5 @@ class Lieu
         return $this;
     }
 
-    public function getNoVille(): ?int
-    {
-        return $this->noVille;
-    }
 
-    public function setNoVille(int $noVille): self
-    {
-        $this->noVille = $noVille;
-
-        return $this;
-    }
 }

@@ -22,7 +22,9 @@ class Etat
      */
     private $libelle;
 
-
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Sortie", mappedBy="etat")
+     */
     private $sortie;
 
     /**
