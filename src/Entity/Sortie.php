@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\SortieRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -48,33 +50,34 @@ class Sortie
     private $descriptioninfos;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Etat", inversedBy="")
-     * @ORM\Column(type="integer")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Etat", inversedBy="sortie")
      */
     private $etat;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Participant", inversedBy="")
-     * @ORM\Column(type="integer")
      */
     private $organisateur;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Lieu", inversedBy="")
-     * @ORM\Column(type="integer")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Lieu", inversedBy="sortie")
      */
     private $lieu;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Campus", inversedBy="")
-     * @ORM\Column(type="integer")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Campus", inversedBy="sorties")
      */
     private $campus;
+
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Participant", inversedBy="")
-     * @ORM\Column(type="integer")
+     * @ORM\ManyToMany(targetEntity=participant::class)
      */
     private $inscrit;
+
+    public function __construct()
+    {
+        $this->inscrit = new ArrayCollection();
+    }
 
     /**
      * @return mixed
@@ -266,5 +269,45 @@ class Sortie
     public function setInscrit($inscrit): void
     {
         $this->inscrit = $inscrit;
+    }
+
+    public function addInscrit(participant $inscrit): self
+    {
+        if (!$this->inscrit->contains($inscrit)) {
+            $this->inscrit[] = $inscrit;
+        }
+
+        return $this;
+    }
+
+    public function removeInscrit(participant $inscrit): self
+    {
+        $this->inscrit->removeElement($inscrit);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|participant[]
+     */
+    public function getTest(): Collection
+    {
+        return $this->test;
+    }
+
+    public function addTest(participant $test): self
+    {
+        if (!$this->test->contains($test)) {
+            $this->test[] = $test;
+        }
+
+        return $this;
+    }
+
+    public function removeTest(participant $test): self
+    {
+        $this->test->removeElement($test);
+
+        return $this;
     }
 }
