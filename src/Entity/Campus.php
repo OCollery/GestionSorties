@@ -19,10 +19,22 @@ class Campus
 
     /**
      * @ORM\Column(type="string", length=30)
-     * @ORM\OneToMany(targetEntity=Participant::class, mappedBy="nom")
-     * @ORM\OneToMany(targetEntity=Sortie::class, mappedBy="nom")
      */
     private $nomCampus;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Participant::class, mappedBy="campus")
+     */
+    private $participants;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Sortie::class, mappedBy="campus")
+     */
+    private $sorties;
+
+
+    //*******************************************************************************************//
+
 
     public function getId(): ?int
     {

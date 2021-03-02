@@ -19,9 +19,15 @@ class Ville
 
     /**
      * @ORM\Column(type="string", length=30)
-     * @ORM\OneToMany(targetEntity=Lieu::class, inversedBy="nom")
      */
     private $nomVille;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Lieu::class, mappedBy="noVille")
+     */
+    private $lieux;
+
+    //**************************************************************************************//
 
     /**
      * @ORM\Column(type="string", length=10)
@@ -57,3 +63,5 @@ class Ville
         return $this;
     }
 }
+
+
