@@ -12,17 +12,30 @@ class UpdateType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('nom')
-            ->add('dateHeureDebut')
-            ->add('duree')
-            ->add('dateLimiteInscription')
-            ->add('nbInscriptionsMax')
-            ->add('descriptioninfos')
-            ->add('etat')
-            ->add('organisateur')
-            ->add('lieu')
-            ->add('campus')
-            ->add('inscrit')
+            ->add('nom',null, [
+                "label" => 'Nom de la sortie: '
+            ])
+            ->add('dateHeureDebut',null,[
+                "label" => "Date et heure de la sortie: "
+            ])
+            ->add('dateLimiteInscription',null, [
+                "label" => "Date limite d'inscription: "
+            ])
+            ->add('nbInscriptionsMax', null, [
+                "label" => "Nombre de places"
+            ])
+            ->add('duree',null,[
+                "label" => "Durée: "
+            ])
+            ->add('descriptioninfos', null, [
+                "label" => "Descritpion et infos: "
+            ])
+            ->add('campus', null, [
+                "label" => "Campus: "
+            ])
+            ->add('lieu', null, [
+                "label" => "Lieu: "
+            ])
         ;
     }
 
