@@ -38,14 +38,6 @@ class OlivierController extends AbstractController
 
     }
 
-    /**
-     * @Route ("/supprimer{id}",name="supprimer")
-     */
-    public function supprimer(EntityManagerInterface $em,Sortie $sortie)
-    {
-        $repo = $em->getRepository(Sortie::class);
-        return $this->render('olivier/supprimer.html.twig');
-    }
 
     /**
      * @Route ("/delete{id}", name="delete_sortie")

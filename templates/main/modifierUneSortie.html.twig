@@ -19,7 +19,7 @@
 <br>
     <button type="submit">Enregister</button>
     <button type="submit">Publier la sortie</button>
-    <button><a href="{{ path('delete_sortie')}}">Supprimer la sortie</button>
+    <button><a href="{{ path('delete_sortie',{'id':sorties.id})}}">Supprimer</a></button>
     <button><a href="{{ path('home') }}">Annuler</button>
 {{ form_end(updateForm) }}
 
