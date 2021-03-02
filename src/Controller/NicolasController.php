@@ -2,7 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\Etat;
+use App\Entity\Sortie;
 use App\Form\CreationSortieType;
+use App\Repository\EtatRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,7 +21,7 @@ class NicolasController extends AbstractController
     {
        // $this->denyAccessUnlessGranted("ROLE_USER");
 
-        $sortie = new \App\Entity\Sortie();
+        $sortie = new Sortie();
 
         $createSortieForm = $this->createForm(CreationSortieType::class, $sortie);
 
@@ -32,12 +35,12 @@ class NicolasController extends AbstractController
             elseif($request->request->has('enregistrer'))
             {
                 $etat = $em->getRepository(Etat::class)->find(1);
-                $sortie->setIdEtat($etat);
+                $sortie->setEtat($etat);
             }
             elseif ($request->request->has('publier'))
             {
                 $etat = $em->getRepository(Etat::class)->find(2);
-                $sortie->setIdEtat($etat);
+                $sortie->setEtat($etat);
             }
 
             $em->persist($sortie);

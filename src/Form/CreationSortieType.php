@@ -19,9 +19,7 @@ class CreationSortieType extends AbstractType
             ->add('duree')
             ->add('descriptioninfos')
             ->add('campus')
-            ->add('lieu')
-            ->add('campus')
-        ;
+            ->add('lieu');
     }
 
     public function configureOptions(OptionsResolver $resolver)
