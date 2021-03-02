@@ -4,16 +4,23 @@
     Profil du participant
 {% endblock %}
 
-
-
 {% block body %}
 <div class="profil">
     <div class="photo">
         <img src="{{ asset('img/PhotoUser.png') }}" alt="">
     </div>
-    <div class="example-wrapper">
+    <div class="pseudo">
         <h1>{{ participant.pseudo}}</h1>
-
+            <div class="infos">
+                Prénom : {{ participant.prenom }} <br>
+                Nom : {{ participant.nom }}  <br>
+                Téléphone : {{ participant.telephone }}  <br>
+                Email : {{ participant.mail }}  <br>
+                Campus : {{ participant.campus }}  <br>
+            </div>
+        <form action="/accueil/{id}">
+            <button type="submit">Retour (accueil, avec id passé en url)</button>
+        </form>
     </div>
 </div>
 {% endblock %}
