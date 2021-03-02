@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\CampusRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -32,6 +33,13 @@ class Campus
      */
     private $sorties;
 
+
+    //****************************************************************************************//
+
+    public function __construct() {
+        $this->sorties = new ArrayCollection();
+        $this->participants = new ArrayCollection();
+    }
 
     //*******************************************************************************************//
 

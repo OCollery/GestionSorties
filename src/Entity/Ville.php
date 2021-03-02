@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\VilleRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -26,6 +27,10 @@ class Ville
      * @ORM\OneToMany(targetEntity=Lieu::class, mappedBy="noVille")
      */
     private $lieux;
+
+    public function __construct(){
+        $this->lieux = new ArrayCollection();
+    }
 
     //**************************************************************************************//
 
