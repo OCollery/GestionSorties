@@ -22,7 +22,7 @@ class NicolasController extends AbstractController
      */
     public function creationSortie(Request $request, EntityManagerInterface $em /* ,UserInterface $user pour récup l'utilsateur */)
     {
-       // $this->denyAccessUnlessGranted("ROLE_USER");
+       $this->denyAccessUnlessGranted("ROLE_USER");
        // $userId = $user->getId(); récupération de l'id utilisateur
 
         $sortie = new Sortie();
