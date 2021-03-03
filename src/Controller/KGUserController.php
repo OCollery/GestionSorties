@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Form\MonProfilType;
+use Psr\Container\ContainerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,6 +22,7 @@ class KGUserController extends AbstractController
      */
     public function login()
     {
+        $this->addFlash('error','pseudo ou mot de passe incorrect');
 
 
         return $this->render('kg_user/login.html.twig', [
@@ -34,6 +36,8 @@ class KGUserController extends AbstractController
     {
     }
 
+
+
     /**
      * @Route("/monProfil", name="monProfil")
      */
@@ -42,6 +46,36 @@ class KGUserController extends AbstractController
                              UserPasswordEncoderInterface $passwordEncoder,
                              EntityManagerInterface $em)
     {
+        $user = $this->getUser();
+
+
+
+        $form = $this->createForm(MonProfilType::class, $user);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $hashed= $passwordEncoder->encodePassword($user, $user->getMotPasse());
+            $user->setMotPasse($hashed);
+
+            $em->persist($user);
+            $em->flush();
+
+            $this->addFlash('success','Le profil a été mis à jour');
+
+
+        }
+
+        return $this->render("kg_user/monProfil.html.twig", ["form" => $form->createView()]);
+    }
+    /**
+     * @Route("/administrerProfil", name="administrerProfil")
+     */
+
+    public function administrerProfil(Request $request,
+                                UserPasswordEncoderInterface $passwordEncoder,
+                                EntityManagerInterface $em): Response
+    {
+
         $user = new Participant();
         $user ->setActif(true);
         $user ->setAdmin(false);
@@ -59,6 +93,8 @@ class KGUserController extends AbstractController
 
         }
 
-        return $this->render("kg_user/monProfil.html.twig", ["form" => $form->createView()]);
+        return $this->render("kg_user/administrerProfil.html.twig", ["form" => $form->createView()]);
     }
+
+
 }
