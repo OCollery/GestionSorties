@@ -8,7 +8,6 @@ use App\Entity\Sortie;
 use App\Entity\Ville;
 use App\Form\UpdateType;
 use Doctrine\ORM\EntityManagerInterface;
-use http\Encoding\Stream\Enbrotli;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,9 +21,6 @@ class OlivierController extends AbstractController
      */
     public function modifier(EntityManagerInterface $em , Request $request, Sortie $sortie, Lieu $lieu, Ville $ville): Response
     {
-        //$repo = $em->getRepository(Lieu::class);
-
-
     //on récupère le formulaire
         $form = $this->createForm(UpdateType::class, $sortie);//$sortie va ds le form
         $form->handleRequest($request);//traite les infos
@@ -58,10 +54,12 @@ class OlivierController extends AbstractController
      */
     public function publier(EntityManagerInterface $em, Request $request,Etat $etat, Sortie $sortie,int $id)
     {
+        //permet de mettre à jour l'état en ouverte (publié)
         $etat = $em->getRepository(Etat::class)->find(2);
         $sortie->setEtat($etat);
         $em->flush();
 
+        $this->addFlash('success','La sortie a été publiée');
         return $this->redirectToRoute('home');
     }
 
@@ -70,7 +68,11 @@ class OlivierController extends AbstractController
      */
     public function afficherAnnulation(EntityManagerInterface $em,Request $request,Sortie $sortie)
     {
-        return $this->render('olivier/annulerSortie.html.twig',['sorties'=>$sortie]);
+        //faire appel à l'input 'info' du formulaire de modif sortie
+        $form = $this->createForm(UpdateType::class);
+        $form->handleRequest($request);//traite les infos
+
+        return $this->render('olivier/annulerSortie.html.twig',['updateForm'=>$form->createView(),'sorties'=>$sortie]);
     }
 
     /**
@@ -78,10 +80,14 @@ class OlivierController extends AbstractController
      */
     public function annuler(EntityManagerInterface $em,Request $request,Sortie $sortie, int $id, Etat $etat)
     {
+        //permet de mettre à jour l'état en annulée
         $etat = $em ->getRepository(Etat::class)->find(6);
         $sortie ->setEtat($etat);
+
         $em ->flush();
 
+        //permet de faire apparaitre un message de réussite et redirigé vers la page home
+        $this->addFlash('success','La sortie a été annulée');
         return $this->redirectToRoute('home');
     }
 }
