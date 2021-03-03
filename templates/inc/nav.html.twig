@@ -1,13 +1,14 @@
 <nav>
     <ul>
 
-        {%  if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+      {%  if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+
+            <li><a href="{{ path('logout') }}">Se déconnecter</a> </li>
+        {%  else %}
             <th><a href="{{ path('home') }}">Villes</a></th>
             <th><a href="{{ path('home') }}">Campus</a></th>
             <th><a href="{{ path('home') }}">Accueil</a></th>
             <th><a href="{{ path('monProfil') }}">Mon profil</a></th>
-            <li><a href="{{ path('logout') }}">Se déconnecter</a> </li>
-        {%  else %}
             <li><a href="{{ path('login') }}">Se connecter</a></li>
         {% endif %}
     </ul>
