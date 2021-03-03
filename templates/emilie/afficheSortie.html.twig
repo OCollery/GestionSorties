@@ -1,0 +1,79 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Détails d'une sortie
+{% endblock %}
+
+{% block body %}
+    <h1>Afficher une sortie</h1>
+   <div class="sortie">
+       <div class="right">
+           Nom de la sortie : {{ sortie.nom }} <br>
+           Date et heure de la sortie : {{ sortie.dateHeureDebut | date('d/m/Y à H:i') }}  <br>
+           Date limite d'inscription : {{ sortie.dateLimiteInscription | date('d/m/Y à H:i') }} <br>
+           Nombres de place : {{ sortie.nbInscriptionsMax }} <br>
+           Durée : {{ sortie.duree *60 }} minutes <br>
+           Description et infos : {{ sortie.descriptioninfos }} <br> <br>
+       </div>
+       <div class="left">
+           Campus : {{ sortie.campus }} <br>
+           Lieu : {{ sortie.lieu }} <br>
+           Rue : {{ sortie.lieu.rue }} <br>
+           Code postal : {{ sortie.lieu.noVille.codePostal }}<br>
+           Latitude : {{ sortie.lieu.latitude }} <br>
+           Longitude : {{ sortie.lieu.longitude }} <br>
+       </div>
+   </div>
+
+    <h2>Liste des participants inscrits</h2>
+
+    <div class="tableau">
+                        <table cellspacing="0" cellpadding="1" border="1" width="500" >
+                            <tr style="color:white;background-color:grey">
+                                <th>Pseudo</th>
+                                <th>Nom</th>
+                            </tr>
+
+                            {% for participant in participants %}
+                                <div class="inscrit">
+                                    <tr>
+                                        <td>{{ participant.pseudo }}</td>
+                                        <td>{{ participant.nom }}</td>
+                                    </tr>
+                                </div>
+
+                            {% endfor %}
+
+                            <tr>
+                                <td>JBL</td>
+                                <td>Jean Bapt Lamarck</td>
+                            </tr>
+                            <tr>
+                                <td>YC44</td>
+                                <td>Yves Cousteau</td>
+                            </tr>
+                            <tr>
+                                <td>JBL</td>
+                                <td>Jean Bapt Lamarck</td>
+                            </tr>
+                            <tr>
+                                <td>YC44</td>
+                                <td>Yves Cousteau</td>
+                            </tr>
+                            <tr>
+                                <td>JBL</td>
+                                <td>Jean Bapt Lamarck</td>
+                            </tr>
+                            <tr>
+                                <td>YC44</td>
+                                <td>Yves Cousteau</td>
+                            </tr>
+                        </table>
+                    </div>
+                </td>
+            </tr>
+        </table>
+
+    </div>
+
+{% endblock %}

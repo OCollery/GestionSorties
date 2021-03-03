@@ -1,6 +1,24 @@
 .profil {
     display: flex;
+    justify-content: space-around;
 }
+
+.sortie {
+    display: flex;
+    justify-content: space-around;
+}
+
+.right,
+.left {
+
+}
+
+.tableau {
+    width: 520px;
+    height: 120px;
+    overflow: auto; /*pour la barre de scroll*/
+}
+
 body {
 
 }
