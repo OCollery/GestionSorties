@@ -5,11 +5,13 @@ namespace App\Entity;
 use App\Repository\ParticipantRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
+ * ORM\Table(name="participant")
  * @ORM\Entity(repositoryClass=ParticipantRepository::class)
  */
-class Participant
+class Participant implements UserInterface
 {
     /**
      * @ORM\Id
@@ -273,15 +275,17 @@ class Participant
     /**
      * @return Campus
      */
-    public function getCampus(): Campus
+    public function getCampus()
     {
-        return $this->campus;
+       return $this->campus;
+
     }
+
 
     /**
      * @param Campus $campus
      */
-    public function setCampus(Campus $campus): void
+    public function setCampus($campus): void
     {
         $this->campus = $campus;
     }
@@ -306,9 +310,30 @@ class Participant
     return $this;
     }
 
+    public function getRoles()
+    {
+        return ["ROLE_USER"];
+    }
 
+    public function getPassword()
+    {
+        // TODO: Implement getPassword() method.
+    }
 
+    public function getSalt()
+    {
+       return null;
+    }
 
+    public function getUsername()
+    {
+        // TODO: Implement getUsername() method.
+    }
+
+    public function eraseCredentials()
+    {
+
+    }
 
 
 }

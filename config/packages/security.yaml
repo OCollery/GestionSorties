@@ -4,9 +4,8 @@ security:
            entity:
                class: App\Entity\Participant
                property: pseudo
-
     firewalls:
-        main:
+       main:
             pattern: ^/
             provider: our_db_provider
             anonymous: ~
