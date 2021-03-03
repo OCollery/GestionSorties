@@ -70,7 +70,7 @@ class Sortie
     private $campus;
 
     /**
-     * @ORM\ManyToMany(targetEntity=participant::class)
+     * @ORM\ManyToMany(targetEntity=Participant::class)
      */
     private $inscrit;
 
