@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Annuler une sortie | {{ parent() }}{% endblock %}
+
+{% block main %}
+    <label>Nom de la sortie: {{ sorties.nom }}</label><br>
+    <label>Date de la sortie: {{ sorties.dateHeureDebut | date('d/m/Y ') }}</label><br>
+    <label>Campus: {{ sorties.campus }}</label><br>
+    <label>Lieu: {{ sorties.lieu }}</label><br>
+    <label>Motif: </label><input type="text"><br>
+    {{ sorties.etat.libelle}}
+    <br>
+    <button>Enregister</button>
+    <button><a href="{{ path('modifier',{'id':sorties.id}) }}">Annuler</a></button>
+
+
+{% endblock %}
+
+

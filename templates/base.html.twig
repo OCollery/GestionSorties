@@ -14,18 +14,7 @@
     <header>
         <a href="{{ path('home') }}" title="sortir.com | Home"><img src="{{ asset('img/logo.png') }}">Sortir.com</a>
 
-        <nav>
-            <table>
-                <tr>
-                    <th><a href="{{ path('home') }}">Villes</a></th>
-                    <th><a href="{{ path('home') }}">Campus</a></th>
-                    <th><a href="{{ path('home') }}">Accueil</a></th>
-                    <th><a href="{{ path('monProfil') }}">Mon profil</a></th>
-                    <th><a href="{{ path('logout') }}">Se déconnecter</a></th>
-
-                </tr>
-            </table>
-        </nav>
+        {% include('inc/nav.html.twig') %}
     </header>
     {% for label, messages in app.flashes %}
         {% for message in messages %}

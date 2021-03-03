@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Etat;
 use App\Entity\Lieu;
 use App\Entity\Sortie;
 use App\Entity\Ville;
@@ -21,7 +22,7 @@ class OlivierController extends AbstractController
     public function modifier(EntityManagerInterface $em , Request $request, Sortie $sortie, Lieu $lieu, Ville $ville): Response
     {
         $repo = $em->getRepository(Lieu::class);
-        $lieux = $repo->findAll();
+
 
     //on récupère le formulaire
         $form = $this->createForm(UpdateType::class, $sortie);//$sortie va ds le form
@@ -56,4 +57,12 @@ class OlivierController extends AbstractController
 
     }
 
+    /**
+     * @Route ("/annuler_sortie{id}", name="annuler")
+     */
+    public function annuler(EntityManagerInterface $em,Request $request,Sortie $sortie)
+    {
+
+        return $this->render('olivier/annulerSortie.html.twig',['sorties'=>$sortie]);
+    }
 }
