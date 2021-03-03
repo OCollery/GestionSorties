@@ -312,18 +312,18 @@ class Participant implements UserInterface
     return $this;
     }
 
-    public function getUsername()
+    public function getUsername(): string
     {
         return $this->pseudo;
 
     }
 
-    public function getPassword()
+    public function getPassword(): ?string
     {
         return $this->motPasse;
     }
 
-    public function getRoles()
+    public function getRoles(): array
     {
         return ["ROLE_USER"];
     }
