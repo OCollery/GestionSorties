@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Sortie;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -27,7 +28,7 @@ class UpdateType extends AbstractType
             ->add('duree',null,[
                 "label" => "Durée: "
             ])
-            ->add('descriptioninfos', null, [
+            ->add('descriptioninfos', TextareaType::class, [
                 "label" => "Descritpion et infos: "
             ])
             ->add('campus', null, [

@@ -9,22 +9,17 @@
     {{ form_start(updateForm) }}
     {{ form_widget(updateForm) }}
 
-    <form action="modifierUneSortie.html.twig" method="post>
-        <label>Rue: {{lieux.rue}}</label><br>
-        <label>Code postal: {{ lieux.noVille.codePostal}}</label><br>
-        <button type="submit">valider</button>
-        <a href="{{ path('modifier',{'id':sorties.id}) }}">valider2</a>
-        {# <a href="{{ path('modifier', {'id':sorties.id}) }}">  +  </a> #}
-    </form>
 
+    <label>Rue: {{lieux.rue}}</label><br>
+    <label>Code postal: {{ lieux.noVille.codePostal}}</label><br>
     <label>Latitude: </label><input type="text"><br>
     <label>Longitude: </label><input type="text"><br>
 <br>
     <button type="submit">Enregister</button>
-    <button type="submit">Publier la sortie</button>
+    <button><a href="{{ path('publier',{'id':sorties.id}) }}"> Publier la sortie</a></button>
     <button><a href="{{ path('delete_sortie',{'id':sorties.id})}}">Supprimer la sortie</a></button>
     <button><a href="{{ path('home') }}">Annuler modification</button>
-    <button><a href="{{ path('annuler',{'id':sorties.id}) }}"> Annuler la sortie</a></button>
+    <button><a href="{{ path('raison_annulation',{'id':sorties.id}) }}"> Annuler la sortie</a></button>
 {{ form_end(updateForm) }}
 
 
