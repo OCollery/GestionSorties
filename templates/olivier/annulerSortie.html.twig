@@ -8,9 +8,9 @@
     <label>Campus: {{ sorties.campus }}</label><br>
     <label>Lieu: {{ sorties.lieu }}</label><br>
     <label>Motif: </label><input type="text"><br>
-    {{ sorties.etat.libelle}}
+
     <br>
-    <button>Enregister</button>
+    <button><a href="{{ path('annuler',{'id':sorties.id}) }}">Enregister</a></button>
     <button><a href="{{ path('modifier',{'id':sorties.id}) }}">Annuler</a></button>
 
 
