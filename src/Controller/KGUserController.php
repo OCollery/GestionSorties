@@ -19,12 +19,18 @@ class KGUserController extends AbstractController
     /**
      * @Route("/login", name="login")
      */
-    public function login(): Response
+    public function login()
     {
 
         return $this->render('kg_user/login.html.twig', [
 
         ]);
+    }
+    /**
+     * @Route("/logout", name="logout")
+     */
+    public function logout()
+    {
     }
 
     /**
@@ -43,6 +49,9 @@ class KGUserController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            $hashed= $passwordEncoder->encodePassword($user, $user->getMotPasse());
+            $user->setMotPasse($hashed);
+
             $em->persist($user);
             $em->flush();
 

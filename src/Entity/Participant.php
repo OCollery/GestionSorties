@@ -232,6 +232,8 @@ class Participant implements UserInterface
         return $this->motPasse;
     }
 
+
+
     /**
      * @param mixed $motPasse
      */
@@ -310,25 +312,28 @@ class Participant implements UserInterface
     return $this;
     }
 
+    public function getUsername()
+    {
+        return $this->pseudo;
+
+    }
+
+    public function getPassword()
+    {
+        return $this->motPasse;
+    }
+
     public function getRoles()
     {
         return ["ROLE_USER"];
     }
 
-    public function getPassword()
-    {
-        // TODO: Implement getPassword() method.
-    }
 
     public function getSalt()
     {
-       return null;
+
     }
 
-    public function getUsername()
-    {
-        // TODO: Implement getUsername() method.
-    }
 
     public function eraseCredentials()
     {
