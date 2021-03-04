@@ -3,8 +3,10 @@
 namespace App\Controller;
 
 use App\Form\MonProfilType;
+use Doctrine\Persistence\ObjectManager;
 use Psr\Container\ContainerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -13,6 +15,8 @@ use App\Entity\Participant;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 
 class KGUserController extends AbstractController
@@ -80,6 +84,7 @@ class KGUserController extends AbstractController
         $user ->setActif(true);
         $user ->setAdmin(false);
 
+
         $form = $this->createForm(MonProfilType::class, $user);
 
         $form->handleRequest($request);
@@ -96,5 +101,41 @@ class KGUserController extends AbstractController
         return $this->render("kg_user/administrerProfil.html.twig", ["form" => $form->createView()]);
     }
 
+    /**
+     * @Route("/forgottenPassword", name="forgottenPassword")
+     */
+    public function forgottenPassword(Request $request,EntityManagerInterface $em, ObjectManager $objectManager)
+    {
+        $form = $this->createFormBuilder()
+            ->add('mail', EmailType::class)
+            ->getForm();
+
+        $form->handleRequest($request);
+
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $email = $form->getData('mail');
+            var_dump($email);
+            $em = $this->getDoctrine()->getManager();
+
+            $user = $em->getRepository(Participant::class)
+                ->findOneBy([
+                    'mail' => $email
+                ]);
+            if (!$user) {
+                $this->addFlash('warning', "Cet email n'existe pas.");
+                return $this->redirectToRoute("mdp");
+            } else {
+                $user->setResetToken($this->generateToken());
+                $objectManager->persist($user);
+                $objectManager->flush();
+                $resetNotification->notify($user);
+            }
+        }
+        return $this->render('kg_user/forgottenPassword.html.twig', [
+            'form' => $form->createView()
+        ]);
+    }
 
 }

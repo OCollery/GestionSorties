@@ -3,12 +3,17 @@
 {% block title %}Login{% endblock %}
 
 {% block body %}
-    <form action="{{ path('login') }}" method="post">
-        <label for="pseudo">Pseudo :</label>
-        <input type="text" name="_username" id="pseudo">
 
-        <label for="password">Mot de passe: </label>
-        <input type="password" name="_password" id="password">
+<div class="container">
+    <form action="{{ path('login') }}" method="post">
+        <div class="item">
+            <label for="pseudo">Pseudo : </label>
+            <input type="text" name="_username" id="pseudo">
+        </div>
+        <div class="item">
+            <label for="password">Mot de passe: </label>
+            <input type="password" name="_password" id="password">
+        </div>
 
         <button type="submit">Connexion</button>
 
@@ -16,6 +21,8 @@
         <label for="remember_me">Se souvenir de moi</label>
     </form>
 
+    <a href="{{ path('forgottenPassword') }}"> mot de passe oublié </a>
 
+</div>
 
 {% endblock %}

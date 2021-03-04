@@ -19,6 +19,65 @@
     overflow: auto; /*pour la barre de scroll*/
 }
 
+.container {
+    min-width: 360px;
+    max-width: 1000px;
+    margin: auto;
+    padding: 10px 20px;
+}
+
 body {
 
+}
+/**
+forms
+ */
+form label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 2px;
+}
+
+form input, form textarea, form select {
+    box-sizing: border-box;
+    margin-bottom: 12px;
+    min-width: 300px;
+}
+
+form textarea {
+    min-height: 70px;
+}
+
+form button {
+    padding: 5px 10px;
+}
+
+form ul {
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+}
+
+form ul > li {
+    display: block;
+    font-weight: bold;
+    color: #AA3333;
+}
+
+.flashes .flash {
+    padding: 20px;
+    background-color: dodgerblue;
+    color: #FFF;
+    font-size: 24px;
+    margin: 10px 0;
+    text-align: center;
+    border-radius: 3px;
+}
+
+.flashes .flash-success {
+    background-color: #718C00;
+}
+
+.flashes .flash-error {
+    background-color: #AA3333;
 }
