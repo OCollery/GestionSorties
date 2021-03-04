@@ -24,17 +24,20 @@ class SortieRepository extends ServiceEntityRepository
     {
         $qb = $this->createQueryBuilder('s');
         $qb->Where('s.organisateur = :idUtilisateur')
-            ->setParameter('idUtilisateur', $idUtilisateur)
             ->andWhere('s.campus =:idcampus')
-            ->setParameter('idcampus', $idCampus)
-            /*->andWhere('participant_id = :idUtilisateur')
-            ->andWhere('participant_id != :idUtilisateur')*/
+         //   ->andWhere('participant_id = :idUtilisateur')
+           // ->andWhere('participant_id != :idUtilisateur')
             ->andWhere('s.etat= :idEtat')
-            ->setParameter('idEtat', $idEtat)
             ->andWhere('s.nom LIKE :nomCherche')
-            ->setParameter('nomCherche', $nomCherche)
-            //->andWhere('=?')
-        //    ->join('s.sortie_participant', 'participant')
+            ->andWhere('s.dateHeureDebut BETWEEN :debut AND :fin')
+            ->setParameter('idUtilisateur', [1])
+            ->setParameter('idcampus', 1)
+            ->setParameter('idEtat', 2)
+            ->setParameter('nomCherche','%sorti%')
+            ->setParameter('debut','2016-04-03')
+            ->setParameter('fin','2018-10-31')
+
+            //    ->join('s.sortie_participant', 'participant')
           //  ->addSelect('participant')
             ->addOrderBy('s.dateHeureDebut', 'DESC');
         $qb->setMaxResults(30);
