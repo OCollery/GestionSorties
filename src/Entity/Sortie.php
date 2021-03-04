@@ -69,15 +69,17 @@ class Sortie
      */
     private $campus;
 
+
     /**
-     * @ORM\ManyToMany(targetEntity=Participant::class)
+     * @ORM\OneToMany(targetEntity=Participation::class, mappedBy="idSortie")
      */
-    private $inscrit;
+    private $participations;
 
     public function __construct()
     {
-        $this->inscrit = new ArrayCollection();
+        $this->participations = new ArrayCollection();
     }
+
 
     /**
      * @return mixed
