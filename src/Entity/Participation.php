@@ -18,12 +18,12 @@ class Participation
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Sortie::class, inversedBy="participations")
+     * @ORM\OneToMany(targetEntity=Sortie::class, mappedBy="inscriptions")
      */
     private $idSortie;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Participant::class, inversedBy="participations")
+     * @ORM\OneToMany (targetEntity=Participant::class, mappedBy="participations")
      */
     private $idParticipant;
 

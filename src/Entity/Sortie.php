@@ -71,13 +71,13 @@ class Sortie
 
 
     /**
-     * @ORM\OneToMany(targetEntity=Participation::class, mappedBy="idSortie")
+     * @ORM\ManyToOne(targetEntity=Participation::class, inversedBy="idSortie")
      */
-    private $participations;
+    private $inscriptions;
 
     public function __construct()
     {
-        $this->participations = new ArrayCollection();
+        $this->inscriptions = new ArrayCollection();
     }
 
 

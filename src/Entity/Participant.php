@@ -82,23 +82,22 @@ class Participant implements UserInterface
     private $organisateurSortie;
 
 
-    /**
-     * @ORM\OneToMany(targetEntity=Participation::class, mappedBy="idParticipant")
-     */
-    private $participations;
-
 
     /**
      * @ORM\ManyToMany(targetEntity=Sortie::class)
-     * @ORM\JoinTable(name="participation")
      */
-    private $inscritsSortie;
+    private $sorties;
     public function __construct() {
 
         $this->participations = new ArrayCollection();
-        $this->inscritsSortie = new ArrayCollection();
+        $this->sorties = new ArrayCollection();
         $this->organisateurSortie = new ArrayCollection();
     }
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Participation::class, inversedBy="idParticipant")
+     */
+    private $participations;
 
     /**
      * @return mixed
