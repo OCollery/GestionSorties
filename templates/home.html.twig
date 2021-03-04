@@ -1,10 +1,18 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{%  extends 'base.html.twig' %}
 
-</body>
-</html>
+{% block main %}
+    <h2>Date du jour : {{ "now" | date('d/m/Y') }}</h2>
+
+    <table>
+        {# affiche la liste des sorties #}
+        {% for sortie in sorties %}
+
+                <tr>
+                    <td> {{ sortie.nom }} </td>
+                </tr>
+        {%  endfor %}
+    </table>
+
+{% endblock %}
+
+{% block title %}Our series | {{ parent() }} {% endblock %}

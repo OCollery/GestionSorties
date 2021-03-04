@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Sortie;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -17,6 +18,28 @@ class SortieRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Sortie::class);
+    }
+
+    public function findSortie()
+    {
+        $qb = $this->createQueryBuilder('s');
+        $qb->Where('s.organisateur = :idUtilisateur')
+            ->setParameter('idUtilisateur', $idUtilisateur)
+            ->andWhere('s.campus =:idcampus')
+            ->setParameter('idcampus', $idCampus)
+            /*->andWhere('participant_id = :idUtilisateur')
+            ->andWhere('participant_id != :idUtilisateur')*/
+            ->andWhere('s.etat= :idEtat')
+            ->setParameter('idEtat', $idEtat)
+            ->andWhere('s.nom LIKE :nomCherche')
+            ->setParameter('nomCherche', $nomCherche)
+            //->andWhere('=?')
+        //    ->join('s.sortie_participant', 'participant')
+          //  ->addSelect('participant')
+            ->addOrderBy('s.dateHeureDebut', 'DESC');
+        $qb->setMaxResults(30);
+        $query = $qb->getQuery();
+        return new paginator($query);
     }
 
     // /**
