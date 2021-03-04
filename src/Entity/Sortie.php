@@ -4,7 +4,6 @@ namespace App\Entity;
 
 use App\Repository\SortieRepository;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -256,11 +255,9 @@ class Sortie
     {
         $this->campus = $campus;
     }
+    
 
-    /**
-     * @return ArrayCollection
-     */
-    public function getParticipants(): ArrayCollection
+    public function getParticipants()
     {
         return $this->participants;
     }
@@ -272,7 +269,6 @@ class Sortie
     {
         $this->participants = $participants;
     }
-
 
 
 

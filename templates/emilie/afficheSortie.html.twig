@@ -34,40 +34,15 @@
                                 <th>Nom</th>
                             </tr>
 
-                            {% for participant in participants %}
+                            {% for s in sortie.participants %}
                                 <div class="inscrit">
                                     <tr>
-                                        <td>{{ participant.pseudo }}</td>
-                                        <td>{{ participant.nom }}</td>
+                                        <td>{{ s.pseudo }}</td>
+                                        <td>{{ s.nom }}</td>
                                     </tr>
                                 </div>
 
                             {% endfor %}
-
-                            <tr>
-                                <td>JBL</td>
-                                <td>Jean Bapt Lamarck</td>
-                            </tr>
-                            <tr>
-                                <td>YC44</td>
-                                <td>Yves Cousteau</td>
-                            </tr>
-                            <tr>
-                                <td>JBL</td>
-                                <td>Jean Bapt Lamarck</td>
-                            </tr>
-                            <tr>
-                                <td>YC44</td>
-                                <td>Yves Cousteau</td>
-                            </tr>
-                            <tr>
-                                <td>JBL</td>
-                                <td>Jean Bapt Lamarck</td>
-                            </tr>
-                            <tr>
-                                <td>YC44</td>
-                                <td>Yves Cousteau</td>
-                            </tr>
                         </table>
                     </div>
                 </td>

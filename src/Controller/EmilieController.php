@@ -41,20 +41,16 @@ class EmilieController extends AbstractController
         $sortieRepo = $this->getDoctrine()->getRepository(Sortie::class);
         $sortie = $sortieRepo->find($id);
 
-        $participantRepo = $this->getDoctrine()->getRepository(Participant::class);
-        $participants = $participantRepo->findAll();
-
         if (empty($sortie)) {
             throw $this->createNotFoundException("Cette sortie n'existe pas");
         }
 
-        if (empty($participants)) {
-            throw $this->createNotFoundException("Ce participant n'existe pas");
-        }
+//        if (empty($participants)) {
+//            throw $this->createNotFoundException("Il n'y a pas de participants");
+//        }
 
         return $this->render('emilie/afficheSortie.html.twig', [
-            'sortie' => $sortie,
-            'participants' => $participants
+            'sortie' => $sortie
         ]);
 
 

@@ -18,13 +18,16 @@ class ParticipantRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Participant::class);
     }
-//    public function findInscritBySortie()
+//    public function findInscritBySortie($id)
 //    {
 //        $qb = $this->createQueryBuilder('p');
-//        $qb->andWhere(sortie);
+//        $qb->andWhere('sortie.id = $id');
 
-/*  select * from participant_sortie inner join sortie_participant ON sortie_id =id Where sortie.id=? ;  */
+/*  select * from participant_sortie Where sortie.id=? ;  */
 //    }
+
+
+
     // /**
     //  * @return Participant[] Returns an array of Participant objects
     //  */
