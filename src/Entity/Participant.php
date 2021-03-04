@@ -84,20 +84,13 @@ class Participant implements UserInterface
 
 
     /**
-     * @ORM\ManyToMany(targetEntity=Sortie::class)
+     * @ORM\ManyToMany(targetEntity=Sortie::class, inversedBy="participants")
      */
     private $sorties;
+
     public function __construct() {
-
-        $this->participations = new ArrayCollection();
         $this->sorties = new ArrayCollection();
-        $this->organisateurSortie = new ArrayCollection();
     }
-
-    /**
-     * @ORM\ManyToOne(targetEntity=Participation::class, inversedBy="idParticipant")
-     */
-    private $participations;
 
     /**
      * @return mixed
@@ -114,25 +107,6 @@ class Participant implements UserInterface
     {
         $this->organisateurSortie = $organisateurSortie;
     }
-
-    /**
-     * @return mixed
-     */
-    public function getInscritSortie()
-    {
-        return $this->inscritSortie;
-    }
-
-    /**
-     * @param mixed $inscritSortie
-     */
-    public function setInscritSortie($inscritSortie): void
-    {
-        $this->inscritSortie = $inscritSortie;
-    }
-
-
-
 
 
     /**
@@ -299,25 +273,6 @@ class Participant implements UserInterface
         $this->campus = $campus;
     }
 
-    /**
-     * @param mixed $inscritSortie
-     */
-    public function inscritSortie($inscritSortie): void
-    {
-        $this->inscritSortie = $inscritSortie;
-    }
-    public function addInscritSortie(participant $inscritSortie): self
-    {
-    if (!$this->inscritSortie->contains($inscritSortie)) {
-        $this->inscritSortie[] = $inscritSortie;
-    }
-    return $this;
-}
-    public function removeInscritSortie(participant $inscritSortie): self
-    {
-        $this->inscritSortie->removeElement($inscritSortie);
-    return $this;
-    }
 
     public function getUsername(): string
     {
@@ -345,6 +300,22 @@ class Participant implements UserInterface
     public function eraseCredentials()
     {
 
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getSorties(): ArrayCollection
+    {
+        return $this->sorties;
+    }
+
+    /**
+     * @param ArrayCollection $sorties
+     */
+    public function setSorties(ArrayCollection $sorties): void
+    {
+        $this->sorties = $sorties;
     }
 
 

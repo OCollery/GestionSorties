@@ -71,13 +71,13 @@ class Sortie
 
 
     /**
-     * @ORM\ManyToOne(targetEntity=Participation::class, inversedBy="idSortie")
+     * @ORM\ManyToMany(targetEntity=Participant::class, mappedBy="sorties")
      */
-    private $inscriptions;
+    private $participants;
 
     public function __construct()
     {
-        $this->inscriptions = new ArrayCollection();
+        $this->participants = new ArrayCollection();
     }
 
 
@@ -258,36 +258,23 @@ class Sortie
     }
 
     /**
-     * @return mixed
+     * @return ArrayCollection
      */
-    public function getInscrit()
+    public function getParticipants(): ArrayCollection
     {
-        return $this->inscrit;
+        return $this->participants;
     }
 
     /**
-     * @param mixed $inscrit
+     * @param ArrayCollection $participants
      */
-    public function setInscrit($inscrit): void
+    public function setParticipants(ArrayCollection $participants): void
     {
-        $this->inscrit = $inscrit;
+        $this->participants = $participants;
     }
 
-    public function addInscrit(participant $inscrit): self
-    {
-        if (!$this->inscrit->contains($inscrit)) {
-            $this->inscrit[] = $inscrit;
-        }
 
-        return $this;
-    }
 
-    public function removeInscrit(participant $inscrit): self
-    {
-        $this->inscrit->removeElement($inscrit);
-
-        return $this;
-    }
 
 
 }
