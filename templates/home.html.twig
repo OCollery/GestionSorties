@@ -2,8 +2,13 @@
 
 {% block main %}
     <h2>Date du jour : {{ "now" | date('d/m/Y') }}</h2>
-    <h2>Participant : {{ participant.nom }}</h2>
+    <h2>Participant : participant.nom </h2>
+    {{ form_start(registerForm) }}
+    {{ form_widget(registerForm) }}
 
+    <button name="Rechercher" type="submit" >Enregistrer</button>
+
+    {{ form_end(registerForm) }}
     <table>
         <tr>
             <th>Nom de la sortie</th>
