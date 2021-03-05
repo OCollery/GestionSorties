@@ -33,22 +33,18 @@
                                 <th>Pseudo</th>
                                 <th>Nom</th>
                             </tr>
-
-                            {% for s in sortie.participants %}
+                            {% for s in sortie.participants %}  {# grâce à la relation manyToMany, Doctrine nous fournit un array avec les valeurs #}
                                 <div class="inscrit">
                                     <tr>
                                         <td>{{ s.pseudo }}</td>
                                         <td>{{ s.nom }}</td>
                                     </tr>
                                 </div>
-
                             {% endfor %}
                         </table>
                     </div>
                 </td>
             </tr>
         </table>
-
     </div>
-
 {% endblock %}
