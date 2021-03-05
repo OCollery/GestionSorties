@@ -74,7 +74,7 @@ class OlivierController extends AbstractController
             $this->addFlash('success', 'la sortie a été mise à jour');
             return $this->redirectToRoute('home');
         }
-        return $this->render('main/modifierUneSortie.html.twig', [
+        return $this->render('olivier/annulerSortie.html.twig', [
             'villes'=>$ville,'lieux'=>$lieu,'sorties'=>$sortie,
             'updateForm'=>$form->createView()
         ]);
