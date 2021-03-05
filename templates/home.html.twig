@@ -2,13 +2,12 @@
 
 {% block main %}
     <h2>Date du jour : {{ "now" | date('d/m/Y') }}</h2>
-    <h2>Participant : participant.nom </h2>
-    {{ form_start(registerForm) }}
-    {{ form_widget(registerForm) }}
+    <h2>Participant : {{ app.user.prenom }} {{ app.user.nom | slice(0,1)}}. </h2>
 
-    <button name="Rechercher" type="submit" >Enregistrer</button>
 
-    {{ form_end(registerForm) }}
+    <button name="Rechercher" type="submit" >Rechercher</button>
+
+
     <table>
         <tr>
             <th>Nom de la sortie</th>
@@ -22,20 +21,23 @@
         </tr>
         {# affiche la liste des sorties #}
         {% for sortie in sorties %}
-
-                <tr>
-                    <td> {{ sortie.nom }} </td>
-                    <td> {{ sortie.dateHeureDebut | date('d/m/Y')}} </td>
-                    <td> {{ sortie.datelimiteInscription| date('d/m/Y') }} </td>
-                    <td> un nombre à compter / {{ sortie.nbInscriptionsMax }} </td>
-                    <td> {{ sortie.etat.libelle }} </td>
-                    <td> X ? </td>
-                    <td> Bah heu... </td>
-                    <td> Je ferai cela plus tard </td>
-                </tr>
+        <tr>
+            <td> {{ sortie.nom }} </td>
+            <td> {{ sortie.dateHeureDebut | date('d/m/Y')}} </td>
+            <td> {{ sortie.datelimiteInscription| date('d/m/Y') }} </td>
+            <td> {{ sortie.participants |length }} / {{ sortie.nbInscriptionsMax }} </td>
+            <td> {{ sortie.etat.libelle }} </td>
+            <td> {% for s in sortie.participants %}
+                    {% if(s.id == app.user.id) %} X {% endif %}
+                 {% endfor %}
+            </td>
+            <td> {{ sortie.organisateur.prenom }} {{ sortie.organisateur.nom }} </td>
+            <td> Je ferai cela plus tard, trop de if </td>
+        </tr>
         {%  endfor %}
     </table>
 
+    <a href="{{ path('creer_sortie') }}"><button>Créer une sortie</button></a>
 {% endblock %}
 
 {% block title %}Our series | {{ parent() }} {% endblock %}
