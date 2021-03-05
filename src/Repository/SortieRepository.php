@@ -33,8 +33,8 @@ class SortieRepository extends ServiceEntityRepository
             ->setParameter('idUtilisateur', [1])
             ->setParameter('idcampus', 1)
             ->setParameter('idEtat', 2)
-            ->setParameter('nomCherche','%sorti%')
-            ->setParameter('debut','2016-04-03')
+            ->setParameter('nomCherche','%%')
+            ->setParameter('debut','2015-04-03')
             ->setParameter('fin','2018-10-31')
 
             //    ->join('s.sortie_participant', 'participant')
