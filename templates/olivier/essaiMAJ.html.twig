@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block main %}
+<h1>Annulation sortie</h1>
+
+    {{ sortie.nom }}<br>
+    {{ sortie.campus }}<br>
+    {{ sortie.lieu }}<br>
+    {{ sortie.dateHeureDebut | date('d/m/Y ') }}<br>
+    <form method="get" action="{{ path('updateInfo',{'id':sortie.id}) }}">
+
+    {{ form_row(formInfo.descriptioninfos) }}
+<button type="submit">Enregister</button>
+    </form>
+  {# <button type="submit"><a href="{{ path('updateEtat',{'id':sortie.id}) }}">Enregister</a></button>
+  #}
+{% endblock %}
