@@ -285,11 +285,16 @@ class Participant implements UserInterface
         return $this->motPasse;
     }
 
-    public function getRoles(): array
+    public function getRoles()
     {
-        return ["ROLE_USER"];
-    }
+        $roles = array('ROLE_USER');
 
+        if ($this->isAdmin) {
+            $roles[] = 'ROLE_ADMIN';
+        }
+
+        return $roles;
+    }
 
     public function getSalt()
     {
