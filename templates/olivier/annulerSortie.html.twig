@@ -9,15 +9,13 @@
     <label>Lieu: {{ sorties.lieu }}</label><br>
 
     {{ form_start(motifForm) }}
+    {{ form_widget(motifForm) }}
     <button type="submit">Enregister</button>
     {{ form_end(motifForm) }}
 
     <form action="{{ path('home') }}">
         <button>Annuler</button>
     </form>
-
-
-
 {% endblock %}
 
 
