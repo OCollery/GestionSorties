@@ -52,65 +52,28 @@ class NicolasController extends AbstractController
     }
 
     /**
-     * @Route("/rechercherSortie", name="recherche_sortie")
+     * @Route("/home", name="recherche_sortie")
      */
     public function rechercheSortie(Request $request, EntityManagerInterface $em, UserInterface $user)
     {
         // $this->denyAccessUnlessGranted("ROLE_USER");
-        // $userId = $user->getId(); récupération de l'id utilisateur
 
-        $sortie = new Sortie();
-        $rechercheSortieForm = $this->createForm(RechercheSortieType::class, $sortie);
+        $rechercheSortieForm = $this->createForm(RechercheSortieType::class);
 
         $rechercheSortieForm->handleRequest($request);
-        if ($rechercheSortieForm->isSubmitted() && $rechercheSortieForm->isValid()) {
 
-            $em->persist($sortie);
-            $em->flush();
-        }
-
-        return $this->render('home.html.twig', [
-            'registerForm' => $rechercheSortieForm->createView()
-        ]);
-    }
-
-    /**
-     * @Route("/home", name="sortie_list")
-     */
-    public function listeSortie()
-    {
         //récupére les series en bdd
 
         $sortieRepo = $this->getDoctrine()->getRepository(Sortie::class);
         $sortie = $sortieRepo->findSortie();
         $participantRepo = $this->getDoctrine()->getRepository(Participant::class);
         $participant = $participantRepo->findAll();
+
         return $this->render('/home.html.twig', [
             "sorties" => $sortie,
-            "participant"=> $participant
-        ]);
+            "participant"=> $participant,
+            'Form' => $rechercheSortieForm->createView()
+             ]);
     }
 
-    /**
-     * @Route ("/sortie/{id}", name="sortie")
-     * requirements={"id": "\d+"},
-     * methods={"GET"}
-     */
-    public function recupIdSortie($id, Request $request)
-    {
-        $sortieRepo = $this->getDoctrine()->getRepository(Sortie::class);
-        $sortie = $sortieRepo->find($id);
-
-        if (empty($sortie)) {
-            throw $this->createNotFoundException("Cette sortie n'existe pas");
-        }
-
-//        if (empty($participants)) {
-//            throw $this->createNotFoundException("Il n'y a pas de participants");
-//        }
-
-        return $this->render('/home', [
-            'sortie' => $sortie
-        ]);
-    }
 }

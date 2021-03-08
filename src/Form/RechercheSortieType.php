@@ -16,9 +16,9 @@ class RechercheSortieType extends AbstractType
             ->add('dateHeureDebut')
             ->add('dateHeureDebut')
             ->add('organisateur')
-            /*->add('inscrit')
-            ->add('pas inscrit')
-            ->add('passées')*/
+            ->add('inscrit')
+            ->add('pas_inscrit')
+            ->add('passees')
         ;
     }
 
