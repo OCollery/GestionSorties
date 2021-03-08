@@ -16,6 +16,12 @@
     <form action="{{ path('home') }}">
         <button>Annuler</button>
     </form>
+
+
+{# Pense bête
+date du jour: {{ "now" | date_modify("-30 day")| date('d/m/Y')}}<br>
+date +30 jours : {{ sorties.dateHeureDebut | date_modify("+30 day") | date('d/m/Y') }} {# permet d'ajouter 30 jours à la date #}
+
 {% endblock %}
 
 

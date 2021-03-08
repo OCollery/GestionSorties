@@ -9,6 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Validator\Constraints\Date;
 
 class EmilieController extends AbstractController
 {
@@ -36,7 +37,7 @@ class EmilieController extends AbstractController
      * requirements={"id": "\d+"},
      * methods={"GET"}
      */
-    public function showOuting($id, Request $request)
+    public function showOuting($id, Request $request, Sortie $date)
     {
         $sortieRepo = $this->getDoctrine()->getRepository(Sortie::class);
         $sortie = $sortieRepo->find($id);
@@ -48,13 +49,21 @@ class EmilieController extends AbstractController
 //        if (empty($participants)) {
 //            throw $this->createNotFoundException("Il n'y a pas de participants");
 //        }
+    //essai blocage affichage +30jours//écriture semble ok mais le if ne fonctionne pas correctement
+        $aujourdhui = date('now' | date('d/m/Y'));
+        $dateSortie = $date ->  getDateHeureDebut();
+        $dateSortie ->modify('+30 day');
 
-        return $this->render('emilie/afficheSortie.html.twig', [
-            'sortie' => $sortie
-        ]);
 
+        if ($aujourdhui < $dateSortie)
+        {
+            return $this->render('emilie/afficheSortie.html.twig', [
+                'sortie' => $sortie
+            ]);
 
-
+        }else
+            $this->addFlash('error','La sortie n\'est plus consultable');
+        return  $this->redirectToRoute('home');
     }
 
 }

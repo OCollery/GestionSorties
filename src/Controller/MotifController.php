@@ -35,17 +35,31 @@ class MotifController extends AbstractController
             $this->addFlash('success', 'La sortie a été annulée');
             return  $this->redirectToRoute('home');
         }
+
+    //si l'id est différent de l'id connecté nous sommes renvoyé vers la page login
         $userId = $user -> getId();
         $organisateurSortie = $organisateur ->getOrganisateur()->getId();
-    //test de if sur le render
+
         if ($userId === $organisateurSortie)
         {
-        return $this->render('olivier/annulerSortie.html.twig',['sorties'=>$sortie,'motifForm'=>$formInfo->createView()]);
+            return $this->render('olivier/annulerSortie.html.twig',['sorties'=>$sortie,'motifForm'=>$formInfo->createView()]);
         }else{
+            $this->addFlash('error','Vous ne pouvez pas annuler cette sortie');
             return $this->render('kg_user/login.html.twig');
         }
     }
 
 
+//a ajouter dans la fonction inscription pour empecher celle-ci si la date est dépassée
+ /*     $aujourdhui = $date -> date('now' | date('d/m/Y'));
+        $cloture = $dateSortie -> getDateLimiteInscription();
+
+        if($aujourdhui > $cloture)
+        {
+            $this->addFlash('error','Vous ne pouvez plus vous inscrire à cette sortie');
+            return $this->render('/home.html.twig');
+        }
+
+*/
 
 }
