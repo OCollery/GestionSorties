@@ -1,16 +1,16 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-    Gérer les villes
+    Gérer les campus
 {% endblock %}
 
 {% block body %}
 
-    <h1>Gérer les villes</h1>
+    <h1>Gérer les campus</h1>
 
-    <h2>Filtrer les villes</h2>
+    <h2>Filtrer les campus</h2>
 
-    <input type="search" name="ville" id="ville">
+    <input type="search" name="campus" id="campus">
 
     <form action="" class="search">
         bouton
@@ -20,25 +20,22 @@
     <div class="tableau">
         <table cellspacing="0" cellpadding="1" border="1" width="500" >
             <tr style="color:white;background-color:grey">
-                <th>Ville</th>
-                <th>Code postal</th>
+                <th>Campus</th>
                 <th>Actions</th>
             </tr>
-            {% for v in villes %}
-                <div class="villes">
+            {% for c in campus %}
+                <div class="campus">
                     <tr>
-                        <td>{{ v.nomVille }}</td>
-                        <td>{{ v.codePostal }}</td>
+                        <td>{{ c.nomCampus }}</td>
                         <td>actions...</td>
                     </tr>
                 </div>
             {% endfor %}
             <tr>
-                {{ form_start(formVille) }}
-                <td>{{ form_widget(formVille.nomVille) }}</td>
-                <td>{{ form_widget(formVille.codePostal) }}</td>
+                {{ form_start(formCampus) }}
+                <td>{{ form_widget(formCampus.nomCampus) }}</td>
                 <td><button type="submit">Ajouter</button></td>
-                {{ form_end(formVille) }}
+                {{ form_end(formCampus) }}
             </tr>
         </table>
     </div>
