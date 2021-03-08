@@ -289,7 +289,7 @@ class Participant implements UserInterface
     {
         $roles = array('ROLE_USER');
 
-        if ($this->isAdmin) {
+        if ($this->admin) {
             $roles[] = 'ROLE_ADMIN';
         }
 
