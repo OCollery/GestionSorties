@@ -62,14 +62,36 @@ class AdminController extends AbstractController
         $formCampus->handleRequest($request);
 
         if ($formCampus->isSubmitted() && $formCampus->isValid()) {
-            $manager->persist($campus);
-            $manager->flush();
+                $manager->persist($campus);
+                $manager->flush();
+        }
+            return $this->render("admin/campus.html.twig", [
+                'formCampus' => $formCampus->createView(),
+                'campus' => $campusList->findAll()
+            ]);
         }
 
-        return $this->render("admin/campus.html.twig", [
-            'formCampus' => $formCampus->createView(),
-            'campus' => $campusList->findAll()
-        ]);
+
+    /**
+     * @Route ("deleteCampus/{id}", name="deleteCampus")
+     */
+    public function deleteCampus (Campus $campus, EntityManagerInterface $manager)
+    {
+        $manager->remove($campus);
+        $manager->flush();
+
+        return $this->redirectToRoute('admin_campus');
+    }
+
+    /**
+     * @Route ("deleteVille/{id}", name="deleteVille")
+     */
+    public function deleteVille (Ville $ville, EntityManagerInterface $manager)
+    {
+        $manager->remove($ville);
+        $manager->flush();
+
+        return $this->redirectToRoute('admin_villes');
     }
 
 }

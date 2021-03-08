@@ -27,7 +27,7 @@
                 <div class="campus">
                     <tr>
                         <td>{{ c.nomCampus }}</td>
-                        <td>actions...</td>
+                        <td><a href="{{ path('admin_deleteCampus', {'id': c.id}) }}">Supprimer</a></td>
                     </tr>
                 </div>
             {% endfor %}
