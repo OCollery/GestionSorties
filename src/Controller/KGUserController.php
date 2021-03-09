@@ -61,13 +61,6 @@ class KGUserController extends AbstractController
         $participantRepo=$em->getRepository(Participant::class);
         $participant=$participantRepo->findOneBy(['pseudo'=>$pseudo]);
 
-
-
-
-
-
-
-
         $form = $this->createForm(MonProfilType::class, $user);
 
         $form->handleRequest($request);
