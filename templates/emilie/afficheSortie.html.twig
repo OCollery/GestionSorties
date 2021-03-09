@@ -10,7 +10,7 @@
        <div class="right">
            Nom de la sortie : {{ sortie.nom }} <br>
            Date et heure de la sortie : {{ sortie.dateHeureDebut | date('d/m/Y à H:i') }}  <br>
-           Date limite d'inscription : {{ sortie.dateLimiteInscription | date('d/m/Y à H:i') }} <br>
+           Date limite d'inscription : {{ sortie.dateLimiteInscription | date('d/m/Y à H:i')  }} <br>
            Nombres de place : {{ sortie.nbInscriptionsMax }} <br>
            Durée : {{ sortie.duree *60 }} minutes <br>
            Description et infos : {{ sortie.descriptioninfos }} <br> <br>
@@ -36,7 +36,7 @@
                             {% for s in sortie.participants %}  {# grâce à la relation manyToMany, Doctrine nous fournit un array avec les valeurs #}
                                 <div class="inscrit">
                                     <tr>
-                                        <td>{{ s.pseudo }}</td>
+                                        <td><a href="{{ path('profil',{'id':s.id}) }}">{{ s.pseudo }}</a></td>
                                         <td>{{ s.nom }}</td>
                                     </tr>
                                 </div>

@@ -18,18 +18,22 @@ class MotifController extends AbstractController
     /**
      * @Route ("/Raison_annulation{id}", name="raison_annulation")
      */
-    public function afficherAnnulationEssai(EntityManagerInterface $em,Request $request,Sortie $sortie, Etat $etat, int $id,UserInterface $user, Sortie $organisateur): Response
+    public function afficherAnnulationEssai(EntityManagerInterface $em,Request $request,Sortie $sortie, Etat $etat,
+                                            int $id,UserInterface $user, Sortie $organisateur): Response
     {
         //on récupère le formulaire motifType
         $formInfo = $this->createForm(MotifType::class, $sortie);
         $formInfo->handleRequest($request);//traite les infos
 
         //permet de mettre à jour l'état en annulée
-        $etat = $em ->getRepository(Etat::class)->find(6);
-        $sortie ->setEtat($etat);
+        //$etat = $em ->getRepository(Etat::class)->find(6);
+        //$sortie ->setEtat($etat);
 
         if ($formInfo->isSubmitted() && $formInfo->isValid())
         {
+            $etat = $em ->getRepository(Etat::class)->find(6);
+            $sortie ->setEtat($etat);
+
             $em ->flush();
 
             $this->addFlash('success', 'La sortie a été annulée');
@@ -51,15 +55,17 @@ class MotifController extends AbstractController
 
 
 //a ajouter dans la fonction inscription pour empecher celle-ci si la date est dépassée
- /*     $aujourdhui = $date -> date('now' | date('d/m/Y'));
-        $cloture = $dateSortie -> getDateLimiteInscription();
+ /*     $aujourdhui = date('d/m/y');//date du jour en type string // sert pas vraiment
+        $cloture = $dateLimiteInscription -> getDateLimiteInscription();//mettre en paramètre Sortie $dateLimiteInscription
 
-        if($aujourdhui > $cloture)
+        if($aujourdhui <= $cloture)
         {
+            return $this->render('');//voir comment se passe l'inscription pour savoir où renvoyer
+        }else{
             $this->addFlash('error','Vous ne pouvez plus vous inscrire à cette sortie');
-            return $this->render('/home.html.twig');
+            return $this->redirectToRoute('home');
         }
-
 */
+
 
 }
