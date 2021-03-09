@@ -12,6 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
+
 /**
  * ORM\Table(name="participant")
  * @Vich\Uploadable
@@ -97,7 +98,7 @@ class Participant implements UserInterface, \Serializable
 
     /**
      * @var string|null
-     * @ORM\column(type="string",length=255)
+     * @ORM\column(type="string",length=255,nullable=true)
      */
 
     private $filename;

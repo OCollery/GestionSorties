@@ -24,14 +24,18 @@ class KGUserController extends AbstractController
 {
     /**
      * @Route("/login", name="login")
+     * @param AuthenticationUtils $authenticationUtils
+     * @return Response
      */
-    public function login()
+    public function login( AuthenticationUtils $authenticationUtils): Response
     {
-        $this->addFlash('error','pseudo ou mot de passe incorrect');
+        // get the login error if there is one
+        $error = $authenticationUtils->getLastAuthenticationError();
+        // last username entered by the user
+        $lastUsername = $authenticationUtils->getLastUsername();
 
 
-
-        return $this->render('kg_user/login.html.twig', [
+        return $this->render('kg_user/login.html.twig', ['last_username' => $lastUsername, 'error' => $error
 
         ]);
     }
