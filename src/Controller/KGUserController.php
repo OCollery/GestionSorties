@@ -57,6 +57,9 @@ class KGUserController extends AbstractController
                              EntityManagerInterface $em)
     {
         $user = $this->getUser();
+        $pseudo=$user->getUsername();
+        $participantRepo=$em->getRepository(Participant::class);
+        $participant=$participantRepo->findOneBy(['pseudo'=>$pseudo]);
 
         $form = $this->createForm(MonProfilType::class, $user);
 
@@ -73,7 +76,9 @@ class KGUserController extends AbstractController
 
         }
 
-        return $this->render("kg_user/monProfil.html.twig", ["form" => $form->createView()]);
+        return $this->render("kg_user/monProfil.html.twig", [
+            "form" => $form->createView(),
+            'participant'=>$participant]);
     }
     /**
      * @Route("/administrerProfil", name="administrerProfil")
