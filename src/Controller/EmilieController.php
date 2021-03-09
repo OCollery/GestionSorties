@@ -38,7 +38,7 @@ class EmilieController extends AbstractController
      * requirements={"id": "\d+"},
      * methods={"GET"}
      */
-    public function showOuting($id, Request $request,Sortie $dateDebut)
+    public function showOuting($id, Request $request,Sortie $dateDebut,Sortie $participants)//, Participant $part)
     {
         $sortieRepo = $this->getDoctrine()->getRepository(Sortie::class);
         $sortie = $sortieRepo->find($id);
@@ -51,7 +51,22 @@ class EmilieController extends AbstractController
 //            throw $this->createNotFoundException("Il n'y a pas de participants");
 //        }
 
+
+
         //essai de bloquer url si pas inscrit à la sortie
+        //$output = array();
+
+        $partSortie = $participants ->getParticipants()->getValues();
+        var_dump($partSortie);
+
+        if ($partSortie > 1)
+        {
+            echo ('oui je vaut 1');
+        }
+        echo ('non non je vaut pas 1');
+
+
+
 
 
         //essai blocage affichage +30jours//écriture semble ok mais le if ne fonctionne pas correctement
