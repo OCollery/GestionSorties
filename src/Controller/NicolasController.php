@@ -10,7 +10,9 @@ use App\Entity\Ville;
 use App\Form\CreationSortieType;
 use App\Form\RechercheSortieType;
 use App\Repository\EtatRepository;
+use App\Repository\SortieRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use http\Client\Curl\User;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -75,5 +77,37 @@ class NicolasController extends AbstractController
             'Form' => $rechercheSortieForm->createView()
              ]);
     }
+    /**
+     * @Route("/inscriptionSortie/{idSortie}", name="inscription_sortie")
+     */
+    public function inscriptionSortie(Request $request, EntityManagerInterface $em, SortieRepository $sortieRepo)
+    {
+        //  $this->denyAccessUnlessGranted("ROLE_USER");
+        $idAAjouter=$request->get('idSortie');
+        $participant=$this->getUser();
+        $sortie=$sortieRepo->find($idAAjouter);
+        $participant->addSortie($sortie);
+        $sortie->addParticipant($participant);
+        $em->persist($participant);
+        $em->flush();
 
+
+        return $this->redirectToRoute('home');
+    }
+
+    /**
+     * @Route("/desistementSortie/{idSortie}", name="desistement_sortie")
+     */
+    public function desistementSortie(Request $request, EntityManagerInterface $em,SortieRepository $sortieRepo)
+    {
+        //  $this->denyAccessUnlessGranted("ROLE_USER");
+        $idAAjouter=$request->get('idSortie');
+        $participant=$this->getUser();
+        $sortie=$sortieRepo->find($idAAjouter);
+        $participant->removeSortie($sortie);
+        $sortie->removeParticipant($participant);
+        $em->flush();
+
+        return $this->redirectToRoute('home');
+    }
 }

@@ -39,6 +39,7 @@
                         {% if(s.id == app.user.id) %} X {% endif %}
                      {% endfor %}
                 </td>
+
                 <td> {{ sortie.organisateur.prenom }} {{ sortie.organisateur.nom }} </td>
                 <td> {% if sortie.organisateur.id == app.user.id %}
                         {% if sortie.etat.id == 1 %}
@@ -50,11 +51,10 @@
                         {% if sortie.etat.id == 2 %}
                             <a href="{{ path('sortie', {'id': sortie.id}) }}">Afficher</a>
                             {% for s in sortie.participants %}
-                                {% if(s.id == app.user.id) %} <a href=""> Se désiter </a>
-                                    {% else %} <a href=""> S'inscrire </a>
+                                {% if(s.id == app.user.id) %} <a href="{{ path('desistement_sortie', {'idSortie': sortie.id}) }}"> Se désister </a>
+                                    {% else %} <a href="{{ path('inscription_sortie', {'idSortie': sortie.id}) }}"> S'inscrire </a>
                                 {% endif %}
                             {% endfor %}
-
                         {% elseif sortie.etat.id == 3 %}
                             <a href="{{ path('sortie', {'id': sortie.id}) }}">Afficher</a>
                             {% for s in sortie.participants %}
@@ -63,7 +63,6 @@
                         {% elseif sortie.etat.id == 4 %}
                             <a href="{{ path('sortie', {'id': sortie.id}) }}">Afficher</a>
                         {% elseif sortie.etat.id == 5 %}
-                            <a href="{{ path('sortie', {'id': sortie.id}) }}">Afficher</a>
                         {% elseif sortie.etat.id == 6 %}
                             <a href="{{ path('sortie', {'id': sortie.id}) }}">Afficher</a>
                         {% endif %}

@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\SortieRepository;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -257,7 +258,7 @@ class Sortie
     }
     
 
-    public function getParticipants()
+    public function getParticipants():Collection
     {
         return $this->participants;
     }
@@ -270,6 +271,43 @@ class Sortie
         $this->participants = $participants;
     }
 
+    /**
+     * @param Participant $participant
+     */
+    public function addParticipant(Participant $participant): void
+    {
+        // First we check if we already have this participant in our collection
+        if ($this->participants->contains($participant)){
+            // Do nothing if its already part of our collection
+            return;
+        }
+
+        // Add participants to our array collection
+        $this->participants->add($participant);
+
+        // We also add this sortie to the participant. This way both entities are 'linked' together.
+        // In a manyToMany relationship both entities need to know that they are linked together.
+        $participant->addSortie($this);
+    }
+
+    /**
+     * @param Participant $participant
+     */
+    public function removeParticipant(Participant $participant): void
+    {
+        // First we check if we already have this participant in our collection
+        if (!$this->participants->contains($participant)){
+            // Do nothing if it's not part of our collection
+            return;
+        }
+
+        // Remove participants to our array collection
+        $this->participants->removeElement($participant);
+
+        // We also remove this sortie to the participant. This way both entities are 'linked' together.
+        // In a manyToMany relationship both entities need to know that they are linked together.
+        $participant->removeSortie($this);
+    }
 
 
 

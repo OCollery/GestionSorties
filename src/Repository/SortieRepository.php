@@ -32,7 +32,7 @@ class SortieRepository extends ServiceEntityRepository
             ->andWhere('s.dateHeureDebut BETWEEN :debut AND :fin')
             ->setParameter('idUtilisateur', [1])
             ->setParameter('idcampus', 1)
-            ->setParameter('idEtat', 3)
+            ->setParameter('idEtat', 2)
             ->setParameter('nomCherche','%%')
             ->setParameter('debut','2015-04-03')
             ->setParameter('fin','2025-10-31')

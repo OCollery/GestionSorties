@@ -323,5 +323,42 @@ class Participant implements UserInterface
         $this->sorties = $sorties;
     }
 
+    /**
+     * @param Sortie $sortie
+     */
+    public function addSortie(Sortie $sortie): void
+    {
+        // First we check if we already have this participant in our collection
+        if ($this->sorties->contains($sortie)){
+            // Do nothing if its already part of our collection
+            return;
+        }
+
+        // Add participants to our array collection
+        $this->sorties->add($sortie);
+
+        // We also add this sortie to the participant. This way both entities are 'linked' together.
+        // In a manyToMany relationship both entities need to know that they are linked together.
+        $sortie->addParticipant($this);
+    }
+
+    /**
+     * @param Sortie $sortie
+     */
+    public function removeSortie(Sortie $sortie): void
+    {
+        // First we check if we already have this participant in our collection
+        if (!$this->sorties->contains($sortie)){
+            // Do nothing if its not part of our collection
+            return;
+        }
+
+        // Remove participants to our array collection
+        $this->sorties->removeElement($sortie);
+
+        // We also remove this sortie to the participant. This way both entities are 'linked' together.
+        // In a manyToMany relationship both entities need to know that they are linked together.
+        $sortie->removeParticipant($this);
+    }
 
 }
