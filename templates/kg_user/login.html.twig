@@ -5,6 +5,11 @@
 {% block body %}
 
 <div class="container">
+    {% if error %}
+        <div class="alert alert-danger" role="alert">pseudo ou mot de passe incorrect</div>
+    {% endif %}
+
+
     <form action="{{ path('login') }}" method="post">
         <div>
             <label for="pseudo">Pseudo : </label>

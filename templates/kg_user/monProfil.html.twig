@@ -3,7 +3,11 @@
 {% block title %}Mon Profil{% endblock %}
 
 {% block body %}
-
+<section class="row col-xs-offset-1 col-xs-10 col-xs-offset-1">
+    <section class="row col-xs-offset-1 col-xs-3">
+        <img src="{{ asset('filename') }}">
+    </section>
+    <section class="row col-xs-offset-1 col-xs-4">
     <div class="container">
     <h1>Modifier mon profil</h1>
     {{ form_start(form) }}
@@ -11,5 +15,5 @@
     <button type="submit">Modifier mon profil</button>
     {{ form_end(form) }}
     </div>
-
+</section>
 {% endblock %}

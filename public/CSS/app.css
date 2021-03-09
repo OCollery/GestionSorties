@@ -34,8 +34,11 @@ forms
  */
 form label {
     display: block;
+    min-width: 300px;
     font-weight: bold;
     margin-bottom: 2px;
+
+
 }
 
 form input, form textarea, form select {
