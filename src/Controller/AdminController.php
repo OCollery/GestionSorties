@@ -35,6 +35,14 @@ class AdminController extends AbstractController
      */
     public function gererVilles(VilleRepository $villes, Request $request, EntityManagerInterface $manager)
     {
+
+        $data = $request->request->get('search');
+        $res = $villes->findOneBySomeField($data);
+
+
+
+
+
         $ville = new Ville();
 
         $formVille = $this->createForm(VillesType::class, $ville);
@@ -47,7 +55,7 @@ class AdminController extends AbstractController
 
         return $this->render("admin/villes.html.twig", [
             'formVille' => $formVille->createView(),
-            'villes' => $villes->findAll()
+            'res' => $res
         ]);
     }
 
@@ -66,8 +74,7 @@ class AdminController extends AbstractController
                 $manager->flush();
         }
             return $this->render("admin/campus.html.twig", [
-                'formCampus' => $formCampus->createView(),
-                'campus' => $campusList->findAll()
+                'formCampus' => $formCampus->createView()
             ]);
         }
 
@@ -94,4 +101,11 @@ class AdminController extends AbstractController
         return $this->redirectToRoute('admin_villes');
     }
 
+    /**
+     * @Route ("search", name="search")
+     */
+    public function search(VilleRepository $villeRepo, Request $request, EntityManagerInterface $em)
+    {
+
+    }
 }
