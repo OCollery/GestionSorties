@@ -5,10 +5,12 @@ namespace App\Form;
 use App\Entity\Participant;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use function Sodium\add;
 
 class MonProfilType extends AbstractType
 {
@@ -28,8 +30,13 @@ class MonProfilType extends AbstractType
             ))
 
             ->add('campus')
+            ->add('imageFile',FileType::class,['required'=>false])
 
-        ;
+
+
+    ;
+
+
     }
 
     public function configureOptions(OptionsResolver $resolver)

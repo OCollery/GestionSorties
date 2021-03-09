@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Form\MonProfilType;
+use App\Form\ParticipantFileType;
 use Doctrine\Persistence\ObjectManager;
 use Psr\Container\ContainerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -29,6 +30,7 @@ class KGUserController extends AbstractController
         $this->addFlash('error','pseudo ou mot de passe incorrect');
 
 
+
         return $this->render('kg_user/login.html.twig', [
 
         ]);
@@ -51,8 +53,6 @@ class KGUserController extends AbstractController
                              EntityManagerInterface $em)
     {
         $user = $this->getUser();
-
-
 
         $form = $this->createForm(MonProfilType::class, $user);
 
@@ -103,8 +103,13 @@ class KGUserController extends AbstractController
 
     /**
      * @Route("/forgottenPassword", name="forgottenPassword")
+     * @param Request $request
+     * @param EntityManagerInterface $em
+     * @param ObjectManager $objectManager
+     * @param $resetNotification
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
      */
-    public function forgottenPassword(Request $request,EntityManagerInterface $em, ObjectManager $objectManager)
+    public function forgottenPassword(Request $request, EntityManagerInterface $em)
     {
         $form = $this->createFormBuilder()
             ->add('mail', EmailType::class)
@@ -128,9 +133,9 @@ class KGUserController extends AbstractController
                 return $this->redirectToRoute("mdp");
             } else {
                 $user->setResetToken($this->generateToken());
-                $objectManager->persist($user);
-                $objectManager->flush();
-                $resetNotification->notify($user);
+                $em->persist($user);
+                $em->flush();
+               // $resetNotification->notify($user);/
             }
         }
         return $this->render('kg_user/forgottenPassword.html.twig', [

@@ -5,13 +5,20 @@ namespace App\Entity;
 use App\Repository\ParticipantRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+
+use Exception;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\HttpFoundation\File\File;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
  * ORM\Table(name="participant")
+ * @Vich\Uploadable
  * @ORM\Entity(repositoryClass=ParticipantRepository::class)
  */
-class Participant implements UserInterface
+
+class Participant implements UserInterface, \Serializable
 {
     /**
      * @ORM\Id
@@ -87,6 +94,21 @@ class Participant implements UserInterface
      * @ORM\ManyToMany(targetEntity=Sortie::class, inversedBy="participants")
      */
     private $sorties;
+
+    /**
+     * @var string|null
+     * @ORM\column(type="string",length=255)
+     */
+
+    private $filename;
+
+    /**
+     * @var File|null
+     * @Vich\UploadableField(mapping="property_image",fileNameProperty="filename")
+     */
+    private $imageFile;
+
+
 
     public function __construct() {
         $this->sorties = new ArrayCollection();
@@ -301,6 +323,37 @@ class Participant implements UserInterface
 
     }
 
+    /**
+     * @return string|null
+     */
+    public function getFilename(): ?string
+    {
+        return $this->filename;
+    }
+
+    /**
+     * @param string|null $filename
+     */
+    public function setFilename(?string $filename): void
+    {
+        $this->filename = $filename;
+    }
+
+    /**
+     * @return File|null
+     */
+    public function getImageFile(): ?File
+    {
+        return $this->imageFile;
+    }
+
+    /**
+     * @param File|null $imageFile
+     */
+    public function setImageFile(?File $imageFile): void
+    {
+        $this->imageFile = $imageFile;
+    }
 
     public function eraseCredentials()
     {
@@ -360,5 +413,30 @@ class Participant implements UserInterface
         // In a manyToMany relationship both entities need to know that they are linked together.
         $sortie->removeParticipant($this);
     }
+
+
+    public function serialize()
+    {
+        return serialize([
+            $this->id,
+            $this->pseudo,
+            $this->motPasse,
+            $this->mail,
+
+        ]);
+    }
+
+    public function unserialize($serialized)
+    {
+        list (
+            $this->id,
+            $this->pseudo,
+            $this->motPasse,
+            $this->mail,
+            // see section on salt below
+            // $this->salt
+            ) = unserialize($serialized, ['allowed_classes' => false]);
+    }
+
 
 }
