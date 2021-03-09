@@ -47,4 +47,14 @@ class CampusRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function findOneBySomeField($value)
+    {
+        $qb = $this->createQueryBuilder('c');
+        $qb->andWhere('c.nomCampus LIKE :val')
+            ->setParameter('val', '%'.$value.'%')
+            ->getQuery();
+        $query = $qb->getQuery();
+        return $query->getResult();
+    }
 }

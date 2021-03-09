@@ -10,11 +10,13 @@
 
     <h2>Filtrer les villes</h2>
 
-    <input type="search" name="ville" id="ville">
-
-    <form action="" class="search">
-        bouton
+    <form method="post" action="{{ path('admin_villes') }}">
+        <div class="input-group">
+            <input type="text" class="form-control" placeholder="Le nom contient..." name ="search">
+            <button type="submit">Rechercher</button>
+        </div>
     </form>
+
     <br>
 
     <div class="tableau">
@@ -24,15 +26,18 @@
                 <th>Code postal</th>
                 <th>Actions</th>
             </tr>
-            {% for v in villes %}
-                <div class="villes">
-                    <tr>
-                        <td>{{ v.nomVille }}</td>
-                        <td>{{ v.codePostal }}</td>
-                        <td><a href="{{ path('admin_deleteVille', {'id': v.id}) }}">Supprimer</a></td>
-                    </tr>
-                </div>
-            {% endfor %}
+
+                {% if res %}
+                {% for r in res %}
+                    <div class="villes">
+                        <tr>
+                            <td>{{ r.nomVille }}</td>
+                            <td>{{ r.codePostal }}</td>
+                            <td><a href="{{ path('admin_deleteVille', {'id': r.id}) }}">Supprimer</a></td>
+                        </tr>
+                    </div>
+                {% endfor %}
+                {% endif %}
             <tr>
                 {{ form_start(formVille) }}
                 <td>{{ form_widget(formVille.nomVille) }}</td>
@@ -46,5 +51,12 @@
     </tr>
     </table>
     </div>
+
+
+
+
+
+
+
 
 {% endblock %}
