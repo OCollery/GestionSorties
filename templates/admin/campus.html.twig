@@ -10,11 +10,13 @@
 
     <h2>Filtrer les campus</h2>
 
-    <input type="search" name="campus" id="campus">
-
-    <form action="" class="search">
-        bouton
+    <form method="post" action="{{ path('admin_campus') }}">
+        <div class="input-group">
+            <input type="text" class="form-control" placeholder="Le nom contient..." name ="search">
+            <button type="submit">Rechercher</button>
+        </div>
     </form>
+
     <br>
 
     <div class="tableau">
@@ -23,11 +25,11 @@
                 <th>Campus</th>
                 <th>Actions</th>
             </tr>
-            {% for c in campus %}
+            {% for r in res %}
                 <div class="campus">
                     <tr>
-                        <td>{{ c.nomCampus }}</td>
-                        <td><a href="{{ path('admin_deleteCampus', {'id': c.id}) }}">Supprimer</a></td>
+                        <td>{{ r.nomCampus }}</td>
+                        <td><a href="{{ path('admin_deleteCampus', {'id': r.id}) }}">Supprimer</a></td>
                     </tr>
                 </div>
             {% endfor %}
