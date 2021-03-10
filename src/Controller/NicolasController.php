@@ -88,11 +88,26 @@ class NicolasController extends AbstractController
         $sortie=$sortieRepo->find($idAAjouter);
         $participant->addSortie($sortie);
         $sortie->addParticipant($participant);
-        $em->persist($participant);
-        $em->flush();
 
 
-        return $this->redirectToRoute('home');
+        $aujourdhui = date('d/m/y');//date du jour en type string
+        $cloture = $sortie->getDateLimiteInscription();//je reprend $sortie qui récupère déjà la sortie
+        $clotureInscription = $cloture->format('d/m/y');
+
+        if($aujourdhui <= $clotureInscription)
+        {
+            $em->persist($participant);
+            $em->flush();
+
+            $this->addFlash('success','Vous êtes bien inscrit à la sortie');
+            return $this->redirectToRoute('home');
+       }else{
+            $this->addFlash('error','Vous ne pouvez plus vous inscrire à cette sortie');
+            return $this->redirectToRoute('home');
+       }
+
+
+        //return $this->redirectToRoute('home');
     }
 
     /**

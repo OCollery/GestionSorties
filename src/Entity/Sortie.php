@@ -61,6 +61,7 @@ class Sortie
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Lieu", inversedBy="sortie")
+     * @ORM\JoinColumn(onDelete="CASCADE")
      */
     private $lieu;
 
