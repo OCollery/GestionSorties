@@ -47,9 +47,9 @@ class AdminController extends AbstractController
         if ($formVille->isSubmitted() && $formVille->isValid()) {
             $manager->persist($ville);
             $manager->flush();
-        }
-        $this->addFlash('success', 'La ville a bien été enregistrée');
 
+        $this->addFlash('success', 'La ville a bien été enregistrée');
+        }
         return $this->render("admin/villes.html.twig", [
             'formVille' => $formVille->createView(),
             'res' => $res
@@ -72,8 +72,9 @@ class AdminController extends AbstractController
         if ($formCampus->isSubmitted() && $formCampus->isValid()) {
                 $manager->persist($campus);
                 $manager->flush();
-        }
+
         $this->addFlash('success', 'Le campus a bien été enregistré');
+        }
         return $this->render("admin/campus.html.twig", [
                 'formCampus' => $formCampus->createView(),
                 'res' => $res

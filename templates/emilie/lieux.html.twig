@@ -1,0 +1,68 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Gérer les villes
+{% endblock %}
+
+{% block body %}
+
+    <h1>Gérer les leux</h1>
+
+    <h2>Filtrer les lieux</h2>
+
+    <form method="post" action="{{ path('lieux') }}">
+        <div class="input-group">
+            <input type="text" class="form-control" placeholder="Le nom contient..." name ="search">
+            <button type="submit">Rechercher</button>
+        </div>
+    </form>
+
+    <br>
+
+    <div class="tableau">
+        <table cellspacing="0" cellpadding="1" border="1" width="500" >
+            <tr style="color:white;background-color:grey">
+                <th>Nom</th>
+                <th>Rue</th>
+                <th>Latitude</th>
+                <th>Longitude</th>
+
+                {% if is_granted('ROLE_ADMIN') %}
+                <th>Actions</th>
+                {% endif %}
+
+            </tr>
+
+                {% for r in res %}
+                    <div class="lieux">
+                        <tr>
+                            <td>{{ r.nom }}</td>
+                            <td>{{ r.rue }}</td>
+                            <td>{{ r.latitude }}</td>
+                            <td>{{ r.longitude }}</td>
+
+                            {% if is_granted('ROLE_ADMIN') %}
+                            <td><a href="{{ path('deleteLieu', {'id': r.id}) }}">Supprimer</a></td>
+                            {% endif %}
+
+                        </tr>
+                    </div>
+                {% endfor %}
+            <tr>
+                {{ form_start(formLieu) }}
+                <td>{{ form_row(formLieu.nom) }}</td>
+                <td>{{ form_row(formLieu.rue) }}</td>
+                <td>{{ form_row(formLieu.latitude) }}</td>
+                <td>{{ form_row(formLieu.longitude) }}</td>
+                <td><button type="submit">Ajouter</button></td>
+                {{ form_end(formLieu) }}
+            </tr>
+        </table>
+    </div>
+    </td>
+    </tr>
+    </table>
+    </div>
+
+
+{% endblock %}

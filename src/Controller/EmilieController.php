@@ -2,8 +2,14 @@
 
 namespace App\Controller;
 
+use App\Entity\Lieu;
 use App\Entity\Participant;
 use App\Entity\Sortie;
+use App\Entity\Ville;
+use App\Form\LieuType;
+use App\Form\VillesType;
+use App\Repository\LieuRepository;
+use App\Repository\VilleRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -32,6 +38,50 @@ class EmilieController extends AbstractController
             'participant' => $participant
         ]);
     }//mettre un if pour si inscrit à la sortie je peux aller sur détail sortie
+
+
+
+    /**
+     * @Route ("/lieux", name="lieux")
+     */
+    public function gererLieux(LieuRepository $lieux, Request $request, EntityManagerInterface $manager)
+    {
+        $data = $request->request->get('search');
+        $res = $lieux->findOneBySomeField($data);
+
+        $lieu = new Lieu();
+
+        $formLieu = $this->createForm(LieuType::class, $lieu);
+        $formLieu->handleRequest($request);
+
+        if ($formLieu->isSubmitted() && $formLieu->isValid()) {
+            $manager->persist($lieu);
+            $manager->flush();
+
+        $this->addFlash('success', 'Le lieu a bien été enregistré');
+        }
+        return $this->render('emilie/lieux.html.twig', [
+            'formLieu' => $formLieu->createView(),
+            'res' => $res
+        ]);
+    }
+
+
+
+    /**
+     * @Route ("deleteLieu/{id}", name="deleteLieu")
+     */
+    public function deleteLieu (Lieu $lieu, EntityManagerInterface $manager)
+    {
+        $manager->remove($lieu);
+        $manager->flush();
+        $this->addFlash('success', 'Le lieu a bien été supprimé');
+
+        return $this->redirectToRoute('emilie/lieux.html.twig');
+    }
+
+
+
 
     /**
      * @Route ("/sortie/{id}", name="sortie")
