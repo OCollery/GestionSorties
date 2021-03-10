@@ -3,8 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Campus;
+use App\Entity\Participant;
 use App\Entity\Ville;
 use App\Form\CampusType;
+use App\Form\CreerProfilType;
 use App\Form\VillesType;
 use App\Repository\CampusRepository;
 use App\Repository\VilleRepository;
@@ -13,6 +15,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 /**
  * @Route("/admin", name="admin_")
@@ -103,5 +106,32 @@ class AdminController extends AbstractController
         $this->addFlash('success', 'La ville a bien été supprimée');
 
         return $this->redirectToRoute('admin_villes');
+    }
+
+    /**
+     * @Route ("/creerProfil", name="creerProfil")
+     */
+
+    public function creerProfil (Request $request,
+                                    UserPasswordEncoderInterface $passwordEncoder,
+                                    EntityManagerInterface $em): Response
+    {
+
+        $user = new Participant();
+
+        $form = $this->createForm(CreerProfilType::class,$user);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $hashed= $passwordEncoder->encodePassword($user, $user->getMotPasse());
+            $user->setMotPasse($hashed);
+
+            $em->persist($user);
+            $em->flush();
+
+
+        }
+
+        return $this->render('kg_user/creerProfil.html.twig', ["form" => $form->createView()]);
     }
 }
