@@ -88,7 +88,7 @@ class EmilieController extends AbstractController
      * requirements={"id": "\d+"},
      * methods={"GET"}
      */
-    public function showOuting($id, Request $request,Sortie $dateDebut)
+    public function showOuting($id, Request $request,Sortie $dateDebut,Sortie $participants, UserInterface $user, Sortie $organisateur)
     {
         $sortieRepo = $this->getDoctrine()->getRepository(Sortie::class);
         $sortie = $sortieRepo->find($id);
@@ -101,21 +101,35 @@ class EmilieController extends AbstractController
 //            throw $this->createNotFoundException("Il n'y a pas de participants");
 //        }
 
-        //essai de bloquer url si pas inscrit à la sortie
 
+        //permet de récupérer un tableau avec tous les participants
+        $partSortie = $participants ->getParticipants()->getValues();//récupère un tableau des inscrits
+        $userId = $user -> getId();//récupère l'utilisateur
+        $organisateurId = $organisateur->getOrganisateur()->getId();//récupère l'id de l'organisateur
+
+        //permet de récupérer tous les id inscris
+        foreach ($partSortie as $value)
+        {
+            $id = $value->getId();
+
+        //condition pour bloquer accès si l'on est ni l'organisateur ni un des inscrits
+            if ($id === $userId || $userId === $organisateurId)//userId à définir
+            {
+                return $this->render('emilie/afficheSortie.html.twig', [
+                    'sortie' => $sortie]);
+            }else{
+                $this->addFlash('error','Vous n\'êtes pas autorisé à accéder au détail de la sortie');
+                return $this->redirectToRoute('home');
+            }
+        }
 
         //essai blocage affichage +30jours//écriture semble ok mais le if ne fonctionne pas correctement
         $aujourdhui = date('d/m/y');//date du jour en type string
         $dateSortie = $dateDebut->getDateHeureDebut();
 
+
         //$dateSortieEssai = date_modify($dateSortie,'+30 day');//fonctionne mais modifie l'affichage de la date dans le twig donc pb
         $dateSortieEssai = $dateSortie->format('d/m/y' );
-
-
-      /*   echo ($dateSortieEssai);
-        echo($aujourdhui);
-        var_dump($aujourdhui);
-        var_dump($dateSortieEssai);*/
 
         if ($aujourdhui < $dateSortieEssai)
         {

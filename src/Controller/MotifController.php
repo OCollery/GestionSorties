@@ -18,8 +18,8 @@ class MotifController extends AbstractController
     /**
      * @Route ("/Raison_annulation{id}", name="raison_annulation")
      */
-    public function afficherAnnulation(EntityManagerInterface $em,Request $request,Sortie $sortie, Etat $etat,
-                                            int $id,UserInterface $user, Sortie $organisateur): Response
+    public function afficherAnnulation(EntityManagerInterface $em,Request $request,Sortie $sortie,Etat $etat,
+                                            int $id,UserInterface $user, Sortie $organisateur, Sortie $dateLimiteInscription): Response
     {
         //on récupère le formulaire motifType
         $formInfo = $this->createForm(MotifType::class, $sortie);
@@ -41,20 +41,9 @@ class MotifController extends AbstractController
         }
 
 
-        //essai de récupérer le user et idParticipant
-        $participant = $user ->getId();
-        var_dump($participant);
-        
-
-
-
-
-
-
-
-
     //si l'id est différent de l'id connecté nous sommes renvoyé vers la page login
         $userId = $user -> getId();
+        echo ('User Id: '.$userId);
         $organisateurSortie = $organisateur ->getOrganisateur()->getId();
 
         if ($userId === $organisateurSortie)
@@ -64,30 +53,6 @@ class MotifController extends AbstractController
             $this->addFlash('error','Vous ne pouvez pas annuler cette sortie');
             return $this->render('kg_user/login.html.twig');
         }
-
+        //return $this->render('olivier/annulerSortie.html.twig',['sorties'=>$sortie,'motifForm'=>$formInfo->createView()]);
     }
-
-
-//a ajouter dans la fonction inscription pour empecher celle-ci si la date est dépassée
- /*     $aujourdhui = date('d/m/y');//date du jour en type string // sert pas vraiment
-        $cloture = $dateLimiteInscription -> getDateLimiteInscription();//mettre en paramètre Sortie $dateLimiteInscription
-
-        if($aujourdhui <= $cloture)
-        {
-            return $this->render('');//voir comment se passe l'inscription pour savoir où renvoyer
-        }else{
-            $this->addFlash('error','Vous ne pouvez plus vous inscrire à cette sortie');
-            return $this->redirectToRoute('home');
-        }
-*/
-
-//a ajouter dans la fonction "showProfile" et "showOuting"
-//si pas inscrit à la sortie alors page non dispo et redirect vers home
-/*
-
-
-
-
-
- */
 }
