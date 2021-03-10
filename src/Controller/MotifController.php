@@ -19,7 +19,7 @@ class MotifController extends AbstractController
      * @Route ("/Raison_annulation{id}", name="raison_annulation")
      */
     public function afficherAnnulation(EntityManagerInterface $em,Request $request,Sortie $sortie,Etat $etat,
-                                            int $id/*,UserInterface $user, Sortie $organisateur*/): Response
+                                            int $id,UserInterface $user, Sortie $organisateur): Response
     {
         //on récupère le formulaire motifType
         $formInfo = $this->createForm(MotifType::class, $sortie);
@@ -41,18 +41,13 @@ class MotifController extends AbstractController
         }
 
 
-            //essai de récupérer le user et idParticipant
-
-
-
-
-
-
+            //essai de récupérer le user et idParticipant//A faire
 
 
 
     //si l'id est différent de l'id connecté nous sommes renvoyé vers la page login
-       /* $userId = $user -> getId();
+        $userId = $user -> getId();
+        echo ('User Id: '.$userId);
         $organisateurSortie = $organisateur ->getOrganisateur()->getId();
 
         if ($userId === $organisateurSortie)
@@ -61,8 +56,8 @@ class MotifController extends AbstractController
         }else{
             $this->addFlash('error','Vous ne pouvez pas annuler cette sortie');
             return $this->render('kg_user/login.html.twig');
-        }*/
-        return $this->render('olivier/annulerSortie.html.twig',['sorties'=>$sortie,'motifForm'=>$formInfo->createView()]);
+        }
+        //return $this->render('olivier/annulerSortie.html.twig',['sorties'=>$sortie,'motifForm'=>$formInfo->createView()]);
     }
 
 
