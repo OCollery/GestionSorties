@@ -48,6 +48,7 @@ class AdminController extends AbstractController
             $manager->persist($ville);
             $manager->flush();
         }
+        $this->addFlash('success', 'La ville a bien été enregistrée');
 
         return $this->render("admin/villes.html.twig", [
             'formVille' => $formVille->createView(),
@@ -72,7 +73,8 @@ class AdminController extends AbstractController
                 $manager->persist($campus);
                 $manager->flush();
         }
-            return $this->render("admin/campus.html.twig", [
+        $this->addFlash('success', 'Le campus a bien été enregistré');
+        return $this->render("admin/campus.html.twig", [
                 'formCampus' => $formCampus->createView(),
                 'res' => $res
             ]);
@@ -86,6 +88,7 @@ class AdminController extends AbstractController
     {
         $manager->remove($campus);
         $manager->flush();
+        $this->addFlash('success', 'Le campus a bien été supprimé');
 
         return $this->redirectToRoute('admin_campus');
     }
@@ -97,6 +100,7 @@ class AdminController extends AbstractController
     {
         $manager->remove($ville);
         $manager->flush();
+        $this->addFlash('success', 'La ville a bien été supprimée');
 
         return $this->redirectToRoute('admin_villes');
     }
