@@ -54,25 +54,39 @@ class EmilieController extends AbstractController
             {
                 $compte=0;
                 $sortieId = $value->getId();
+                echo ('sortie ID: '.$sortieId);
+                echo ('<br>');
+                $organisateurSortie = $value->getOrganisateur()->getId();
+                echo ('organisateur: '.$organisateurSortie);
+                echo ('<br>');
+
                 $participantsSortie = $value->getParticipants()->getValues();
 
-                foreach ($participantsSortie as $value)
-                {
+                foreach ($participantsSortie as $value) {
                     $participantSortieId = $value->getId();
+                    echo('participant id: '.$participantSortieId);
+                    echo ('<br>');
 
-                    if ($participantSortieId === $userId || $participantSortieId===$idParticipant)
+                    if ($organisateurSortie == $userId && $participantSortieId == $idParticipant)
                     {
-                        $compte= $compte+1;
+                        return $this->render('emilie/index.html.twig', [
+                            'participant' => $participant]);
                     }
-                    if ($compte ==2)
+
+                    if ($participantSortieId === $userId || $participantSortieId === $idParticipant)
+                    {
+                        $compte = $compte + 1;
+                    }
+                    if ($compte == 2)
                     {
                         return $this->render('emilie/index.html.twig', ['participant' => $participant]);
                     }
-                }
-                if ($compte < 2)
-                {
-                    return $this->redirectToRoute('home');
-                }
+                    }
+                    if ($compte < 2)
+                    {
+                        return $this->redirectToRoute('home');
+                    }
+
             }
         }
     }
