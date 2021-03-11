@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Campus;
 use App\Entity\Etat;
 use App\Entity\Lieu;
 use App\Entity\Participant;
@@ -56,7 +57,7 @@ class NicolasController extends AbstractController
     /**
      * @Route("/home", name="recherche_sortie")
      */
-    public function rechercheSortie(Request $request, EntityManagerInterface $em, UserInterface $user)
+    public function rechercheSortie(Request $request, EntityManagerInterface $em, UserInterface $user, Campus $campusSortie)
     {
         // $this->denyAccessUnlessGranted("ROLE_USER");
 
@@ -66,8 +67,11 @@ class NicolasController extends AbstractController
 
         //récupére les series en bdd
 
+        $campusSortie = $request->get('campus',"Campus Kemper");
+        $campusRepo = $this->getDoctrine()->getRepository(Campus::class);
+        $campus = $campusRepo->find($campusSortie)->getId();
         $sortieRepo = $this->getDoctrine()->getRepository(Sortie::class);
-        $sortie = $sortieRepo->findSortie();
+        $sortie = $sortieRepo->findSortie($campus /*, $etat, $nom */);
         $participantRepo = $this->getDoctrine()->getRepository(Participant::class);
         $participant = $participantRepo->findAll();
 
