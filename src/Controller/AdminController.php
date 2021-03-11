@@ -11,8 +11,11 @@ use App\Form\TelechargerProfilType;
 use App\Form\VillesType;
 use App\Repository\CampusRepository;
 use App\Repository\VilleRepository;
+use App\Service\FileUploader;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -20,7 +23,7 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Serializer\Encoder\CsvEncoder;
 use Symfony\Component\Serializer\Encoder\XmlEncoder;
 use Symfony\Component\Serializer\Encoder\YamlEncoder;
-use Symfony\component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
 
 
@@ -144,12 +147,18 @@ class AdminController extends AbstractController
 
         return $this->render('kg_user/creerProfil.html.twig', ["form" => $form->createView()]);
     }
+    private $dataDirectory;
+
+
 
     private function getDataFromFile(): array
     {
-        $file=$this->dataDirectory.'participant.csv';
-        $fileExtension=pathinfo($file,PATHINFO_EXTENSION);
-        $normalizers=[new ObjectNormalizer()];
+
+
+
+        $file ='data/dataProfil.csv';
+        $fileExtension = pathinfo($file,PATHINFO_EXTENSION);
+        $normalizers = [new ObjectNormalizer()];
 
         $encoders=[
             new CsvEncoder(),
@@ -161,56 +170,77 @@ class AdminController extends AbstractController
         /** @var string $fileString */
         $fileString=file_get_contents($file);
 
-        $data = $serializer->decode($fileString,$fileExtension);
-
-
+        return $serializer->decode($fileString,$fileExtension);
     }
 
-    private function importParticipants(UserPasswordEncoderInterface $passwordEncoder,EntityManagerInterface $em):void
-    {
-        $usersCreated=0;
-        foreach ($this->getDataFromFile() as $row){
-            if(array_key_exists('pseudo',$row) && !empty($row['pseudo'])){
-            $userRepo=$em->getRepository(Participant::class);
-            $user=$userRepo->findOneBy([
-                'pseudo'=>$row['pseudo']
-            ]);
-                if(!$user){
-                    $user=new Participant();
-                    $user->setPseudo($row['pseudo']);
-                    $user->setNom(['nom']);
-                    $user->setPrenom($row['prenom']);
-                    $user->setTelephone($row['telephone']);
-                    $user->setMail($row['mail']);
-                    $user->setMotPasse($row['motPasse']);
-                    $hashed= $passwordEncoder->encodePassword($user, $user->getMotPasse());
-                    $user->setMotPasse($hashed);
-                    $user->setAdmin($row['admin']);
-                    $user->setActif($row['actif']);
-                    $user->setCampus($row['campus']);
 
-                $this->$em->persist($user);
-
-                $usersCreated++;
-                }
-            }
-        }
-        $this->$em->flush();
-
-        }
     /**
      * @Route ("/telechargerProfils", name="telechargerProfils")
      */
 
-    public function essai (Request $request): Response
+    public function essai (Request $request,FileUploader $fileUploader,UserPasswordEncoderInterface $passwordEncoder,EntityManagerInterface $em): Response
     {
-
-
-
+//recuperation du fichier dans le formulaire
         $form = $this->createForm(TelechargerProfilType::class);
 
         $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid())
+        {
+            /** @var UploadedFile $dataFile */
+            $dataFile = $form->get('Fichier')->getData();
+            if ($dataFile)
+            {
+                $dataFileName = $fileUploader->upload($dataFile);
+            }
+//serialisation du fichier et injection dans l'entité Participant
+
+            $usersCreated=0;
+
+
+
+        //injection dans la bdd
+
+            foreach ($this->getDataFromFile() as $row) {
+                if (array_key_exists('pseudo', $row) && !empty($row['pseudo'])) {
+                    $userRepo = $em->getRepository(Participant::class);
+                    $user = $userRepo->findOneBy([
+                        'pseudo' => $row['pseudo']
+                    ]);
+                    if (!$user) {
+                        $user = new Participant();
+                        $user->setPseudo($row['pseudo']);
+                        $user->setNom($row['nom']);
+                        $user->setPrenom($row['prenom']);
+                        $user->setTelephone($row['telephone']);
+                        $user->setMail($row['mail']);
+                        $user->setMotPasse($row['motPasse']);
+                        $hashed = $passwordEncoder->encodePassword($user, $user->getMotPasse());
+                        $user->setMotPasse($hashed);
+                        $user->setAdmin($row['admin']);
+                        $user->setActif($row['actif']);
+
+                        /**$campusRepo = $em->getRepository(Campus::class);
+                        $campus = $campusRepo->findOneBy(['id' => $row['campus_id']]);
+
+                        $user->setCampus('$campus');*/
+
+                        $em->persist($user);
+                        $em->flush();
+
+                        $usersCreated++;
+                    }
+                }
+            }
+
+
+            /**$destination= $this->getParameter(('%kernel.project_dir').'/public/data');
+
+            $uploadedFile->move($destination);*/
+
+
+
+
+            $this->addFlash('success',$usersCreated.' profils ont été ajoutes sans affectation de campus');
 
 
 
