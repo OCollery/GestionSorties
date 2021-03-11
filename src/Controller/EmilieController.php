@@ -82,7 +82,6 @@ class EmilieController extends AbstractController
 
 
 
-
     /**
      * @Route ("/sortie/{id}", name="sortie")
      * requirements={"id": "\d+"},
@@ -103,43 +102,48 @@ class EmilieController extends AbstractController
 
 
         //permet de récupérer un tableau avec tous les participants
-        $partSortie = $participants ->getParticipants()->getValues();//récupère un tableau des inscrits
-        $userId = $user -> getId();//récupère l'utilisateur
+        $partSortie = $participants->getParticipants()->getValues();//récupère un tableau des inscrits
+        $userId = $user->getId();//récupère l'utilisateur
         $organisateurId = $organisateur->getOrganisateur()->getId();//récupère l'id de l'organisateur
 
         //permet de récupérer tous les id inscris
-        foreach ($partSortie as $value)
-        {
+        foreach ($partSortie as $value) {
             $id = $value->getId();
 
-        //condition pour bloquer accès si l'on est ni l'organisateur ni un des inscrits
+            //condition pour bloquer accès si l'on est ni l'organisateur ni un des inscrits
             if ($id === $userId || $userId === $organisateurId)//userId à définir
             {
                 return $this->render('emilie/afficheSortie.html.twig', [
                     'sortie' => $sortie]);
-            }else{
-                $this->addFlash('error','Vous n\'êtes pas autorisé à accéder au détail de la sortie');
+            } else {
+                $this->addFlash('error', 'Vous n\'êtes pas autorisé à accéder au détail de la sortie');
                 return $this->redirectToRoute('home');
             }
         }
 
-        //essai blocage affichage +30jours//écriture semble ok mais le if ne fonctionne pas correctement
-        $aujourdhui = date('d/m/y');//date du jour en type string
-        $dateSortie = $dateDebut->getDateHeureDebut();
 
+    //archivage après 30 jours
+        //a coller dans le controller de Emilie ds showOuting pour l'archivage
+        $aujourdhui = date('d/m/y');//récup date du jour
+        $aujourdhuiEnSeconde = strtotime($aujourdhui);//passe la date du jour en secondes
 
-        //$dateSortieEssai = date_modify($dateSortie,'+30 day');//fonctionne mais modifie l'affichage de la date dans le twig donc pb
-        $dateSortieEssai = $dateSortie->format('d/m/y' );
+        $dateSortie = $dateDebut->getDateHeureDebut();//récup la date de sortie
+        $dateSortieEnString = $dateSortie->format('d/m/y');//passe la date de sortie en string
+        $dateSortieSeconde = strtotime($dateSortieEnString);//passe la date de sortie en seconde
+        $MoisEnSeconde = 30 * 24 * 60 * 60;//variable 30 jours passée en seconde
+        $dateSortie30Jours = $dateSortieSeconde + $MoisEnSeconde;//variable qui additionne la date du jour avec les 30 jours tous ensecondes
 
-        if ($aujourdhui < $dateSortieEssai)
-        {
+        if ($aujourdhuiEnSeconde < $dateSortie30Jours) {
             return $this->render('emilie/afficheSortie.html.twig', [
                 'sortie' => $sortie]);
 
 
-        }else
-            $this->addFlash('error','La sortie n\'est plus consultable');
-        return  $this->redirectToRoute('home');
+        } else {
+            $this->addFlash('error', 'La sortie n\'est plus consultable');
+            return $this->redirectToRoute('home');
+        }
+
+
     }
 
 }
