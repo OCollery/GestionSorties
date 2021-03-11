@@ -25,19 +25,57 @@ class EmilieController extends AbstractController
      * requirements={"id": "\d+"},
      * methods={"GET"}
      */
-    public function showProfile($id, Request $request)
+    public function showProfile($id, Request $request, UserInterface $user)
     {
         $participantRepo = $this->getDoctrine()->getRepository(Participant::class);
         $participant = $participantRepo->find($id);
+        $idParticipant = $participant->getId();//récupère l'id du profil
 
         if(empty($participant)) {
             throw $this->createNotFoundException("Ce participant n'existe pas");
         }
 
-        return $this->render('emilie/index.html.twig', [
-            'participant' => $participant
-        ]);
-    }//mettre un if pour si inscrit à la sortie je peux aller sur détail sortie
+
+        //récup le userId
+        $userId = $user -> getId();
+
+        //récup toutes les sorties
+        $sortieRepo = $this->getDoctrine()->getRepository(Sortie::class);
+        $sortieAll = $sortieRepo->findAll();
+
+
+        if ($userId === $idParticipant)
+        {
+            return $this->render('emilie/index.html.twig', [
+                'participant' => $participant]);
+        }else{
+
+            foreach ($sortieAll as $value)
+            {
+                $compte=0;
+                $sortieId = $value->getId();
+                $participantsSortie = $value->getParticipants()->getValues();
+
+                foreach ($participantsSortie as $value)
+                {
+                    $participantSortieId = $value->getId();
+
+                    if ($participantSortieId === $userId || $participantSortieId===$idParticipant)
+                    {
+                        $compte= $compte+1;
+                    }
+                    if ($compte ==2)
+                    {
+                        return $this->render('emilie/index.html.twig', ['participant' => $participant]);
+                    }
+                }
+                if ($compte < 2)
+                {
+                    return $this->redirectToRoute('home');
+                }
+            }
+        }
+    }
 
 
 

@@ -61,7 +61,7 @@ class OlivierController extends AbstractController
     /**
      * @Route("/Modifier_Sortie{id}", name="modifier")
      */
-    public function modifierEssai(EntityManagerInterface $em , Request $request,Sortie $sortie, Lieu $lieu, Ville $ville)
+    public function modifierSortie(EntityManagerInterface $em , Request $request,Sortie $sortie, Lieu $lieu, Ville $ville)
     {
         //on récupère le formulaire updateType
         $form = $this->createForm(UpdateType::class, $sortie);//$sortie va ds le form
