@@ -2,10 +2,13 @@
 
 namespace App\Repository;
 
+use App\Entity\Campus;
+use App\Entity\Etat;
 use App\Entity\Sortie;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
+
 
 /**
  * @method Sortie|null find($id, $lockMode = null, $lockVersion = null)
@@ -20,27 +23,33 @@ class SortieRepository extends ServiceEntityRepository
         parent::__construct($registry, Sortie::class);
     }
 
-    public function findSortie()
+    public function findSortie(Campus $campus)
     {
+
         $qb = $this->createQueryBuilder('s');
-        $qb->Where('s.organisateur = :idUtilisateur')
-            ->andWhere('s.campus =:idcampus')
+
+        $qb->//Where('s.organisateur = :idUtilisateur')
+         //   ->orWhere('s.organisateur != :userId')
+            andWhere('s.campus =:idcampus')
          //   ->andWhere('participant_id = :idUtilisateur')
            // ->andWhere('participant_id != :idUtilisateur')
-            ->andWhere('s.etat= :idEtat')
-            ->andWhere('s.nom LIKE :nomCherche')
-            ->andWhere('s.dateHeureDebut BETWEEN :debut AND :fin')
-            ->setParameter('idUtilisateur', [1])
-            ->setParameter('idcampus', 1)
-            ->setParameter('idEtat', 2)
-            ->setParameter('nomCherche','%%')
-            ->setParameter('debut','2015-04-03')
-            ->setParameter('fin','2025-10-31')
+           // ->andWhere('s.etat= :idEtat')
+           // ->orWhere('s.etat != 5')
+            //->andWhere('s.nom LIKE :nomCherche')
+//            ->andWhere('s.dateHeureDebut BETWEEN :debut AND :fin')
+  //          ->setParameter('idUtilisateur', $organisateur)
+            //->setParameter('userId', $user)
+            ->setParameter('idcampus', $campus)
+   //         ->setParameter('idEtat', $etat)
+      //      ->setParameter('nomCherche','%'.$nom.'%')
+        //    ->setParameter('debut',$dateDebut)
+          //  ->setParameter('fin',$dateFin)
 
             //    ->join('s.sortie_participant', 'participant')
           //  ->addSelect('participant')
-            ->addOrderBy('s.dateHeureDebut', 'DESC');
+            ->addOrderBy('s.dateHeureDebut', 'ASC');
         $qb->setMaxResults(30);
+
         $query = $qb->getQuery();
         return new paginator($query);
     }
