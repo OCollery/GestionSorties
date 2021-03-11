@@ -54,18 +54,11 @@ class EmilieController extends AbstractController
             {
                 $compte=0;
                 $sortieId = $value->getId();
-                echo ('sortie ID: '.$sortieId);
-                echo ('<br>');
                 $organisateurSortie = $value->getOrganisateur()->getId();
-                echo ('organisateur: '.$organisateurSortie);
-                echo ('<br>');
-
                 $participantsSortie = $value->getParticipants()->getValues();
 
                 foreach ($participantsSortie as $value) {
                     $participantSortieId = $value->getId();
-                    echo('participant id: '.$participantSortieId);
-                    echo ('<br>');
 
                     if ($organisateurSortie == $userId && $participantSortieId == $idParticipant)
                     {
