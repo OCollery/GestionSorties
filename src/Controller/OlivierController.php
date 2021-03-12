@@ -18,35 +18,58 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class OlivierController extends AbstractController
 {
     /**
-     * @Route ("/delete{id}", name="delete_sortie")
+     * @Route ("/delete/{id}", name="delete_sortie")
      */
-    public function delete(EntityManagerInterface  $em, Sortie $sortie)
+    public function delete(EntityManagerInterface  $em, Sortie $sortie,UserInterface $user)
     {
-        $em->remove($sortie);
-        $em->flush();
+        $idOrganisateur = $sortie->getOrganisateur()->getId();
+        $userId = $user->getId();
 
-        $this->addFlash('success', 'La sortie a bien été supprimé');
-        return $this->redirectToRoute('home');
+        if($userId === $idOrganisateur)
+        {
+            $em->remove($sortie);
+            $em->flush();
+
+            return $this->render('olivier/modifierUneSortie.html.twig', [
+                'sorties'=>$sortie,
+                'updateForm'=>$form->createView()]);
+        }else{
+            $this->addFlash('error','Vous ne pouvez pas supprimer cette sortie');
+            return $this->redirectToRoute('home');
+        }
+
     }
 
     /**
-     * @Route ("/publication{id}",name="publier")
+     * @Route ("/publication/{id}",name="publier")
      */
-    public function publier(EntityManagerInterface $em, Sortie $sortie,int $id)
+    public function publier(EntityManagerInterface $em, Sortie $sortie,int $id,UserInterface $user)
     {
+        $idOrganisateur = $sortie->getOrganisateur()->getId();
+        $userId = $user->getId();
 
-        //permet de mettre à jour l'état en ouverte (publié)
-        $etat = $em->getRepository(Etat::class)->find(2);
-        $sortie->setEtat($etat);
-        $em->flush();
+        if($userId === $idOrganisateur)
+        {
+            //permet de mettre à jour l'état en ouverte (publié)
+            $etat = $em->getRepository(Etat::class)->find(2);
+            $sortie->setEtat($etat);
+            $em->flush();
 
-        $this->addFlash('success','La sortie a été publiée');
-        return $this->redirectToRoute('home');
+            return $this->render('olivier/modifierUneSortie.html.twig', [
+                'sorties'=>$sortie,
+                'updateForm'=>$form->createView()]);
+        }else{
+            $this->addFlash('error','Vous ne pouvez pas publier cette sortie');
+            return $this->redirectToRoute('home');
+        }
+
+        //$this->addFlash('success','La sortie a été publiée');
+        //return $this->redirectToRoute('home');
     }
 
 
     /**
-     * @Route("/Modifier_Sortie{id}", name="modifier")
+     * @Route("/Modifier_Sortie/{id}", name="modifier")
      */
     public function modifierSortie(EntityManagerInterface $em , Request $request,Sortie $sortie,UserInterface $user)
     {
