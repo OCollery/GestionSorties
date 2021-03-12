@@ -20,10 +20,7 @@ class RechercheSortieType extends AbstractType
             ->setMethod('POST') //inutile pour du POST mais nécessaire pour du GET
             ->add('campus', EntityType::class, [
                 'class'=> Campus::class
-                //'choice_value' => function (Campus $entity) {
-                //    return $entity->getId();
-              //  },
-        ])
+                ])
             ->add('nom', TextType::class, [
                 'required' =>false,
                 'attr' => array(
@@ -60,7 +57,7 @@ class RechercheSortieType extends AbstractType
                 'required' =>false,
                 'label' => 'Sorties auxquelles je ne suis pas inscrit(e)'
             ])
-            ->add('passees', CheckboxType::class, [
+            ->add('etat', CheckboxType::class, [
                 'required' =>false,
                 'label' => 'Sorties qui sont passées'
             ]);

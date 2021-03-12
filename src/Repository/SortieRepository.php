@@ -23,27 +23,24 @@ class SortieRepository extends ServiceEntityRepository
         parent::__construct($registry, Sortie::class);
     }
 
-    public function findSortie($idCampus)
+    public function findSortie($campus, $etat, $nom, $debut, $fin, $user)
     {
 
         $qb = $this->createQueryBuilder('s');
 
-        $qb->//Where('s.organisateur = :idUtilisateur')
-         //   ->orWhere('s.organisateur != :userId')
-            andWhere('s.campus =:idcampus')
+        $qb-> Where('s.organisateur != :userId')
+            ->andWhere('s.campus =:idCampus')
          //   ->andWhere('participant_id = :idUtilisateur')
            // ->andWhere('participant_id != :idUtilisateur')
-           // ->andWhere('s.etat= :idEtat')
-           // ->orWhere('s.etat != 5')
-            //->andWhere('s.nom LIKE :nomCherche')
-//            ->andWhere('s.dateHeureDebut BETWEEN :debut AND :fin')
-  //          ->setParameter('idUtilisateur', $organisateur)
-            //->setParameter('userId', $user)
-            ->setParameter('idcampus', $idCampus)
-   //         ->setParameter('idEtat', $etat)
-      //      ->setParameter('nomCherche','%'.$nom.'%')
-        //    ->setParameter('debut',$dateDebut)
-          //  ->setParameter('fin',$dateFin)
+            ->andWhere('s.etat!= :idEtat')
+            ->andWhere('s.nom LIKE :nomCherche')
+            ->andWhere('s.dateHeureDebut BETWEEN :debut AND :fin')
+            ->setParameter('userId', $user)
+            ->setParameter('idCampus', $campus)
+            ->setParameter('idEtat', $etat)
+           ->setParameter('nomCherche','%'.$nom.'%')
+            ->setParameter('debut',$debut)
+            ->setParameter('fin',$fin)
 
             //    ->join('s.sortie_participant', 'participant')
           //  ->addSelect('participant')

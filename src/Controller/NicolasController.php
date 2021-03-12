@@ -62,13 +62,22 @@ class NicolasController extends AbstractController
         $rechercheSortieForm->handleRequest($request);
 
         //récupére les series en bdd
-    if(is_null($request->request->get('campus'))): $campusSortie="Campus Kemper";
-    else:
-        $campusSortie = $request->request->get('campus',"Campus Kemper");
-    endif;
-        $campus = $campusRepo->find($campusSortie)->getId();
+
+        $campus = $rechercheSortieForm['campus']->getData();
+        $etat = $rechercheSortieForm['etat']->getData();
+        if($etat==false):$etat=5;endif;
+        $nom = $rechercheSortieForm['nom']->getData();
+        $debut = $rechercheSortieForm['debut']->getData();
+        if(is_null($debut)):$debut=date('now' |date('YY-m-d'));endif;
+        $fin = $rechercheSortieForm['fin']->getData();
+        if(is_null($fin)):$fin=date('now'|date('U').'+1 year');endif;
+        $organisateur = $rechercheSortieForm['organisateur']->getData();
+        if($organisateur==false):$organisateur=$user->getId();endif;
+
+        var_dump($fin);
+
         $sortieRepo = $this->getDoctrine()->getRepository(Sortie::class);
-        $sortie = $sortieRepo->findSortie($campus /*, $etat, $nom */);
+        $sortie = $sortieRepo->findSortie($campus, $etat, $nom, $debut, $fin, $organisateur );
         $participantRepo = $this->getDoctrine()->getRepository(Participant::class);
         $participant = $participantRepo->findAll();
 
