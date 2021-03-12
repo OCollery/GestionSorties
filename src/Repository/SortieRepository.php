@@ -23,7 +23,7 @@ class SortieRepository extends ServiceEntityRepository
         parent::__construct($registry, Sortie::class);
     }
 
-    public function findSortie(Campus $campus)
+    public function findSortie($idCampus)
     {
 
         $qb = $this->createQueryBuilder('s');
@@ -39,7 +39,7 @@ class SortieRepository extends ServiceEntityRepository
 //            ->andWhere('s.dateHeureDebut BETWEEN :debut AND :fin')
   //          ->setParameter('idUtilisateur', $organisateur)
             //->setParameter('userId', $user)
-            ->setParameter('idcampus', $campus)
+            ->setParameter('idcampus', $idCampus)
    //         ->setParameter('idEtat', $etat)
       //      ->setParameter('nomCherche','%'.$nom.'%')
         //    ->setParameter('debut',$dateDebut)
