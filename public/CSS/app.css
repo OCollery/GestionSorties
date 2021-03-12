@@ -91,4 +91,7 @@ form ul > li {
     background-color: #AA3333;
 }
 
-
+nav li {
+    display: inline-block;
+    list-style-type: none;
+}
