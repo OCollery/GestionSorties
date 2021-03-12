@@ -4,19 +4,15 @@ namespace App\Controller;
 
 use App\Entity\Campus;
 use App\Entity\Etat;
-use App\Entity\Lieu;
 use App\Entity\Participant;
 use App\Entity\Sortie;
-use App\Entity\Ville;
 use App\Form\CreationSortieType;
 use App\Form\RechercheSortieType;
-use App\Repository\EtatRepository;
+use App\Repository\CampusRepository;
 use App\Repository\SortieRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use http\Client\Curl\User;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -57,7 +53,7 @@ class NicolasController extends AbstractController
     /**
      * @Route("/home", name="recherche_sortie")
      */
-    public function rechercheSortie(Request $request, EntityManagerInterface $em, UserInterface $user, Campus $campusSortie)
+    public function rechercheSortie(Request $request, CampusRepository $campusRepo,EntityManagerInterface $em, UserInterface $user)
     {
         // $this->denyAccessUnlessGranted("ROLE_USER");
 
@@ -66,9 +62,10 @@ class NicolasController extends AbstractController
         $rechercheSortieForm->handleRequest($request);
 
         //récupére les series en bdd
-
-        $campusSortie = $request->get('campus',"Campus Kemper");
-        $campusRepo = $this->getDoctrine()->getRepository(Campus::class);
+    if(is_null($request->request->get('campus'))): $campusSortie="Campus Kemper";
+    else:
+        $campusSortie = $request->request->get('campus',"Campus Kemper");
+    endif;
         $campus = $campusRepo->find($campusSortie)->getId();
         $sortieRepo = $this->getDoctrine()->getRepository(Sortie::class);
         $sortie = $sortieRepo->findSortie($campus /*, $etat, $nom */);
