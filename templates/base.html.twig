@@ -12,12 +12,15 @@
         {% block javascripts %}{% endblock %}
     </head>
     <body>
+
     <header>
+        {% include('inc/nav.html.twig') %}
         <a href="{{ path('home') }}" title="sortir.com | Home"><img src="{{ asset('img/logo.png') }}">Sortir.com</a>
 
-        {% include('inc/nav.html.twig') %}
+
     </header>
-    <div class="flashes">
+   <div class="flashes">
+
     {% for label, messages in app.flashes %}
         {% for message in messages %}
             <div class="flash flash-{{ label }}">
@@ -31,5 +34,6 @@
     </main>
     <footer></footer>
         {% block body %}{% endblock %}
+
     </body>
 </html>

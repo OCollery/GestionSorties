@@ -10,6 +10,7 @@ use App\Form\CreerProfilType;
 use App\Form\TelechargerProfilType;
 use App\Form\VillesType;
 use App\Repository\CampusRepository;
+use App\Repository\ParticipantRepository;
 use App\Repository\VilleRepository;
 use App\Service\FileUploader;
 use Doctrine\ORM\EntityManagerInterface;
@@ -149,7 +150,58 @@ class AdminController extends AbstractController
     }
     private $dataDirectory;
 
+    /**
+     * @Route ("deleteParticipant/{id}", name="deleteParticipant")
+     */
+    public function deleteParticipant (Participant $users, EntityManagerInterface $manager)
+    {
+        $manager->remove($users);
+        $manager->flush();
+        $this->addFlash('success', 'L\'utilisateur a bien été supprimé');
 
+        return $this->redirectToRoute('admin_gererUtilisateurs');
+    }
+    /**
+     * @Route ("activer/{id}", name="activer")
+     */
+    public function activer (Participant $users, EntityManagerInterface $manager)
+    {
+
+
+        $users->setActif(true);
+
+        $manager->flush();
+
+        return $this->redirectToRoute('admin_gererUtilisateurs');
+    }
+    /**
+     * @Route ("desactiver/{id}", name="desactiver")
+     */
+    public function desactiver (Participant $users, EntityManagerInterface $manager)
+    {
+
+
+        $users->setActif(false);
+
+        $manager->flush();
+
+        return $this->redirectToRoute('admin_gererUtilisateurs');
+    }
+
+    /**
+     * @Route ("/gererUtilisateurs", name="gererUtilisateurs")
+     */
+    public function gererUtilisateurs(ParticipantRepository $users, Request $request, EntityManagerInterface $em): Response
+    {
+
+        $list = $users->findAll();
+
+
+
+
+        return $this->render("admin/gererUtilisateurs.html.twig", [
+            'list' => $list]);
+    }
 
     private function getDataFromFile(): array
     {

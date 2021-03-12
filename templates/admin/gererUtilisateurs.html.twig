@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Gérer les utilisateurs
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+    <h1>Gérer les utilisateurs</h1>
+
+    <div class="tableau2">
+        <table cellspacing="0" cellpadding="1" border="1" width="800" >
+            <tr style="color:white;background-color:grey">
+                <th> </th>
+                <th>Nom Prenom</th>
+                <th>pseudo</th>
+                <th>actif/inactif</th>
+                <th>supression</th>
+
+            </tr>
+            {% for r in list %}
+                <div class="campus">
+                    <tr>
+                        <td><img src="img/properties/{{r.filename}}" class="img-fluid img-thumbnail"></td>
+                        <td>{{ r.nom }}  {{ r.prenom }}</td>
+                        <td>{{ r.pseudo }}</td>
+                        <td> {%if r.actif==1%}
+                                <a href="{{ path('admin_desactiver', {'id': r.id}) }}"><div class="alert alert-success" role="alert">Desactiver</div></a>
+                            {%elseif r.actif==0%}
+                                <a href="{{ path('admin_activer', {'id': r.id}) }}"><div class="alert alert-danger" role="alert">Activer</div></a>
+                            {% endif %}
+                        </td>
+                        <td><a href="{{ path('admin_deleteParticipant', {'id': r.id}) }}">Supprimer</a></td>
+                    </tr>
+                </div>
+            {% endfor %}
+
+        </table>
+    </div>
+</div>
+
+{% endblock %}

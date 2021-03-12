@@ -36,6 +36,7 @@ class KGUserController extends AbstractController
         $lastUsername = $authenticationUtils->getLastUsername();
 
 
+
         return $this->render('kg_user/login.html.twig', ['last_username' => $lastUsername, 'error' => $error
 
         ]);

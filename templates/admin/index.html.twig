@@ -11,10 +11,13 @@
 <div class="example-wrapper">
     <h1>Hello {{ controller_name }}! ✅</h1>
 
-    This friendly message is coming from:
+
     <ul>
-        <li>Your controller at <code><a href="{{ 'C:/wamp64/www/GestionSorties/src/Controller/AdminController.php'|file_link(0) }}">src/Controller/AdminController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'C:/wamp64/www/GestionSorties/templates/admin/index.html.twig'|file_link(0) }}">templates/admin/index.html.twig</a></code></li>
+        <li>Créer un profil manuellement <a href="{{ path('admin_creerProfil')}}"> creerProfil </a> </li>
+        <li>Créer des profil en téléchargeant un fichier <a href="{{ path('admin_telechargerProfils')}}">telechargerProfils </a> </li>
+        <li>Gérer les profils <a href="{{ path('admin_gererUtilisateurs')}}"> gererUtilisateurs </a> </li>
+        <li>Gérer les campus <a href="{{ path('admin_campus')}}"> campus </a> </li>
+        <li>Gérer les villes <a href="{{ path('admin_villes')}}"> villes </a> </li>
     </ul>
 </div>
 {% endblock %}
