@@ -63,9 +63,7 @@ class OlivierController extends AbstractController
         }
 
         $idOrganisateur = $sortie->getOrganisateur()->getId();
-        var_dump($idOrganisateur);
         $userId = $user->getId();
-        var_dump($userId);
 
         if($userId === $idOrganisateur)
         {
