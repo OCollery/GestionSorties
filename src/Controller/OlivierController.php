@@ -13,6 +13,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class OlivierController extends AbstractController
 {
@@ -31,8 +32,9 @@ class OlivierController extends AbstractController
     /**
      * @Route ("/publication{id}",name="publier")
      */
-    public function publier(EntityManagerInterface $em, Request $request,Etat $etat, Sortie $sortie,int $id)
+    public function publier(EntityManagerInterface $em, Sortie $sortie,int $id)
     {
+
         //permet de mettre à jour l'état en ouverte (publié)
         $etat = $em->getRepository(Etat::class)->find(2);
         $sortie->setEtat($etat);
@@ -42,26 +44,11 @@ class OlivierController extends AbstractController
         return $this->redirectToRoute('home');
     }
 
-    /**
-     * @Route ("/annuler_sortie{id}", name="annuler")
-     */
-    public function annuler(EntityManagerInterface $em,Request $request,Sortie $sortie, int $id, Etat $etat)
-    {
-        //permet de mettre à jour l'état en annulée
-        $etat = $em ->getRepository(Etat::class)->find(6);
-        $sortie ->setEtat($etat);
-
-        $em ->flush();
-
-        //permet de faire apparaitre un message de réussite et redirigé vers la page home
-        $this->addFlash('success','La sortie a été annulée');
-        return $this->redirectToRoute('home');
-    }
 
     /**
      * @Route("/Modifier_Sortie{id}", name="modifier")
      */
-    public function modifierSortie(EntityManagerInterface $em , Request $request,Sortie $sortie, Lieu $lieu, Ville $ville)
+    public function modifierSortie(EntityManagerInterface $em , Request $request,Sortie $sortie,UserInterface $user)
     {
         //on récupère le formulaire updateType
         $form = $this->createForm(UpdateType::class, $sortie);//$sortie va ds le form
@@ -74,10 +61,24 @@ class OlivierController extends AbstractController
             $this->addFlash('success', 'la sortie a été mise à jour');
             return $this->redirectToRoute('home');
         }
-        return $this->render('olivier/modifierUneSortie.html.twig', [
-            'villes'=>$ville,'lieux'=>$lieu,'sorties'=>$sortie,
-            'updateForm'=>$form->createView()
-        ]);
+
+        $idOrganisateur = $sortie->getOrganisateur()->getId();
+        var_dump($idOrganisateur);
+        $userId = $user->getId();
+        var_dump($userId);
+
+        if($userId === $idOrganisateur)
+        {
+            return $this->render('olivier/modifierUneSortie.html.twig', [
+                'sorties'=>$sortie,
+                'updateForm'=>$form->createView()]);
+        }else{
+            $this->addFlash('error','Vous ne pouvez pas modifier cette sortie');
+            return $this->redirectToRoute('home');
+        }
+
+
+
 
     }
 
