@@ -167,7 +167,6 @@ class AdminController extends AbstractController
     public function activer (Participant $users, EntityManagerInterface $manager)
     {
 
-
         $users->setActif(true);
 
         $manager->flush();
