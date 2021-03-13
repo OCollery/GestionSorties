@@ -9,6 +9,7 @@ use App\Entity\Sortie;
 use App\Form\CreationSortieType;
 use App\Form\RechercheSortieType;
 use App\Repository\CampusRepository;
+use App\Repository\ParticipantRepository;
 use App\Repository\SortieRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -53,9 +54,9 @@ class NicolasController extends AbstractController
     /**
      * @Route("/home", name="recherche_sortie")
      */
-    public function rechercheSortie(Request $request, CampusRepository $campusRepo,EntityManagerInterface $em, UserInterface $user)
+    public function rechercheSortie(Request $request, ParticipantRepository $participantRepo,EntityManagerInterface $em, UserInterface $user)
     {
-        // $this->denyAccessUnlessGranted("ROLE_USER");
+        $this->denyAccessUnlessGranted("ROLE_USER");
 
         $rechercheSortieForm = $this->createForm(RechercheSortieType::class);
 
@@ -70,14 +71,17 @@ class NicolasController extends AbstractController
         $debut = $rechercheSortieForm['debut']->getData();
         if(is_null($debut)):$debut=date('now' |date('YY-m-d'));endif;
         $fin = $rechercheSortieForm['fin']->getData();
-        if(is_null($fin)):$fin=date('now'|date('U').'+1 year');endif;
+        if(is_null($fin)):$fin=date('now'|date('U'));endif;
         $organisateur = $rechercheSortieForm['organisateur']->getData();
         if($organisateur==false):$organisateur=$user->getId();endif;
-
-        var_dump($fin);
+        $inscrit = $rechercheSortieForm['inscrit']->getData();
+        if($inscrit==true):$inscrit=$user->getId() ;else:$inscrit=0;endif;
+        $nonInscrit = $rechercheSortieForm['pas_inscrit']->getData();
+        if($nonInscrit==true):$nonInscrit=0;else:$nonInscrit=$user->getId();endif;
+        if($inscrit==$nonInscrit) : $participation=$inscrit;else:$participation=max($inscrit,$nonInscrit);endif;
 
         $sortieRepo = $this->getDoctrine()->getRepository(Sortie::class);
-        $sortie = $sortieRepo->findSortie($campus, $etat, $nom, $debut, $fin, $organisateur );
+        $sortie = $sortieRepo->findSortie($campus, $etat, $nom, $debut, $fin, $organisateur, $participation );
         $participantRepo = $this->getDoctrine()->getRepository(Participant::class);
         $participant = $participantRepo->findAll();
 
@@ -99,10 +103,9 @@ class NicolasController extends AbstractController
         $participant->addSortie($sortie);
         $sortie->addParticipant($participant);
 
-
-        $aujourdhui = date('d/m/y');//date du jour en type string
-        $cloture = $sortie->getDateLimiteInscription();//je reprend $sortie qui récupère déjà la sortie
-        $clotureInscription = $cloture->format('d/m/y');
+        $aujourdhui = date('U');//date du jour en type string
+        $cloture = $sortie->getDateLimiteInscription();//je reprends $sortie qui récupère déjà la sortie
+        $clotureInscription = $cloture->format('U');
 
         if($aujourdhui <= $clotureInscription)
         {

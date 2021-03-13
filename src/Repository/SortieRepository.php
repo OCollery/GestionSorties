@@ -23,27 +23,28 @@ class SortieRepository extends ServiceEntityRepository
         parent::__construct($registry, Sortie::class);
     }
 
-    public function findSortie($campus, $etat, $nom, $debut, $fin, $user)
+    public function findSortie($campus, $etat, $nom, $debut, $fin, $user, $inscrit)
     {
 
         $qb = $this->createQueryBuilder('s');
 
-        $qb-> Where('s.organisateur != :userId')
+        $qb-> select('s')
+            ->leftJoin('s.participants', 'participants')
+            ->Where('s.organisateur != :userId')
             ->andWhere('s.campus =:idCampus')
-         //   ->andWhere('participant_id = :idUtilisateur')
-           // ->andWhere('participant_id != :idUtilisateur')
             ->andWhere('s.etat!= :idEtat')
             ->andWhere('s.nom LIKE :nomCherche')
             ->andWhere('s.dateHeureDebut BETWEEN :debut AND :fin')
+            //->andWhere('participants IN (:idInscrit)')
             ->setParameter('userId', $user)
             ->setParameter('idCampus', $campus)
             ->setParameter('idEtat', $etat)
-           ->setParameter('nomCherche','%'.$nom.'%')
+            ->setParameter('nomCherche','%'.$nom.'%')
             ->setParameter('debut',$debut)
             ->setParameter('fin',$fin)
+           // ->setParameter('idInscrit',$inscrit)
 
-            //    ->join('s.sortie_participant', 'participant')
-          //  ->addSelect('participant')
+
             ->addOrderBy('s.dateHeureDebut', 'ASC');
         $qb->setMaxResults(30);
 
