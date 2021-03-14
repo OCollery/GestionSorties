@@ -23,7 +23,7 @@ class SortieRepository extends ServiceEntityRepository
         parent::__construct($registry, Sortie::class);
     }
 
-    public function findSortie($campus, $etat, $nom, $debut, $fin, $user, $inscrit)
+    public function findSortie($campus, $etat, $nom, $debut, $fin, $user, $inscrit, $nonInscrit)
     {
 
         $qb = $this->createQueryBuilder('s');
@@ -35,7 +35,7 @@ class SortieRepository extends ServiceEntityRepository
             ->andWhere('s.etat!= :idEtat')
             ->andWhere('s.nom LIKE :nomCherche')
             ->andWhere('s.dateHeureDebut BETWEEN :debut AND :fin')
-            //->andWhere('participants IN (:idInscrit)')
+           // ->andWhere('participants IN (:idInscrit)')
             ->setParameter('userId', $user)
             ->setParameter('idCampus', $campus)
             ->setParameter('idEtat', $etat)

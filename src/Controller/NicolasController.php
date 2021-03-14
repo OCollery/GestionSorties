@@ -69,19 +69,27 @@ class NicolasController extends AbstractController
         if($etat==false):$etat=5;endif;
         $nom = $rechercheSortieForm['nom']->getData();
         $debut = $rechercheSortieForm['debut']->getData();
-        if(is_null($debut)):$debut=date('now' |date('YY-m-d'));endif;
         $fin = $rechercheSortieForm['fin']->getData();
-        if(is_null($fin)):$fin=date('now'|date('U'));endif;
+
+        if(is_null($debut)):
+            $debut=date('Y-m-d');
+            if(is_null($fin)):
+                $debutPourFin = new \DateTime($debut);
+                $fin=date('Y-m-d',strtotime($debutPourFin->format('y-m-d'))+60*60*24*365);
+            endif;
+        endif;
+        if(is_null($fin)):
+            $fin=date('Y-m-d',strtotime($debut->format('y-m-d'))+60*60*24*365);
+        endif;
         $organisateur = $rechercheSortieForm['organisateur']->getData();
         if($organisateur==false):$organisateur=$user->getId();endif;
         $inscrit = $rechercheSortieForm['inscrit']->getData();
         if($inscrit==true):$inscrit=$user->getId() ;else:$inscrit=0;endif;
         $nonInscrit = $rechercheSortieForm['pas_inscrit']->getData();
         if($nonInscrit==true):$nonInscrit=0;else:$nonInscrit=$user->getId();endif;
-        if($inscrit==$nonInscrit) : $participation=$inscrit;else:$participation=max($inscrit,$nonInscrit);endif;
 
         $sortieRepo = $this->getDoctrine()->getRepository(Sortie::class);
-        $sortie = $sortieRepo->findSortie($campus, $etat, $nom, $debut, $fin, $organisateur, $participation );
+        $sortie = $sortieRepo->findSortie($campus, $etat, $nom, $debut, $fin, $organisateur, $inscrit, $nonInscrit );
         $participantRepo = $this->getDoctrine()->getRepository(Participant::class);
         $participant = $participantRepo->findAll();
 
